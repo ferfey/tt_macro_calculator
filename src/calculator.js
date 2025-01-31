@@ -221,3 +221,101 @@ const Calculator = () => {
 
                 <button type="submit" className="button">Calculate Macros</button>
             </form>
+{/* Results Section */}
+            {results && (
+                <div className="results">
+                    <h3>Your Results</h3>
+                    
+                    {/* Energy Breakdown Section */}
+                    <div style={{marginBottom: '20px', padding: '15px', background: '#f8fafc', borderRadius: '4px'}}>
+                        <h4 style={{marginTop: 0, marginBottom: '10px'}}>Energy Breakdown</h4>
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                            <div className="macro-result">
+                                <span>Base Metabolic Rate (BMR):</span>
+                                <span>{results.energyData.bmr} calories</span>
+                            </div>
+                            <div className="macro-result">
+                                <span>Activity Calories:</span>
+                                <span>+{results.energyData.activityCalories} calories</span>
+                            </div>
+                            <div className="macro-result" style={{fontWeight: 'bold'}}>
+                                <span>Total Daily Energy Expenditure:</span>
+                                <span>{results.energyData.tdee} calories</span>
+                            </div>
+                            <div className="macro-result" style={{
+                                color: results.energyData.calorieAdjustment === 0 ? '#2c3e50' :
+                                      results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
+                            }}>
+                                <span>Goal Adjustment:</span>
+                                <span>{results.energyData.calorieAdjustment > 0 ? '+' : ''}{results.energyData.calorieAdjustment}%</span>
+                            </div>
+                            <div className="macro-result" style={{fontWeight: 'bold', fontSize: '18px'}}>
+                                <span>Target Daily Calories:</span>
+                                <span>{results.calories} calories</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Macronutrient Breakdown */}
+                    <div>
+                        <h4 style={{marginBottom: '10px'}}>Macronutrient Targets</h4>
+                        <div className="macro-result">
+                            <span>Protein:</span>
+                            <span>{results.protein}g</span>
+                        </div>
+                        <div className="macro-result">
+                            <span>Carbs:</span>
+                            <span>{results.carbs}g</span>
+                        </div>
+                        <div className="macro-result">
+                            <span>Fat:</span>
+                            <span>{results.fat}g</span>
+                        </div>
+                    </div>
+
+                    {/* Customization Section */}
+                    <button 
+                        className="button"
+                        onClick={() => setShowCustomize(!showCustomize)}
+                        style={{marginTop: '20px'}}
+                    >
+                        {showCustomize ? 'Hide Customization' : 'Customize Macros'}
+                    </button>
+
+                    {showCustomize && (
+                        <div style={{marginTop: '20px'}}>
+                            <div className="form-group">
+                                <label>Protein (g/lb of lean mass)</label>
+                                <input 
+                                    type="number"
+                                    className="input-field"
+                                    value={proteinMultiplier}
+                                    onChange={(e) => setProteinMultiplier(parseFloat(e.target.value) || 0)}
+                                    min="0"
+                                    step="0.1"
+                                />
+                                <div style={{marginTop: '5px', fontSize: '14px', color: '#666'}}>
+                                    Your lean mass: {Math.round(leanMass)} lbs
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Daily Carbs (g)</label>
+                                <input 
+                                    type="number"
+                                    className="input-field"
+                                    value={customCarbs}
+                                    onChange={(e) => setCustomCarbs(parseInt(e.target.value) || 0)}
+                                    min="0"
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+};
+
+// Render the component
+ReactDOM.render(<Calculator />, document.getElementById('macro-calculator'));
