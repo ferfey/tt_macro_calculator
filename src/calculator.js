@@ -133,3 +133,91 @@ const Calculator = () => {
                         onChange={e => setData({...data, bodyFat: e.target.value})}
                     />
                 </div>
+{/* Activity Level Selection */}
+                <div className="form-group">
+                    <label>Daily Activity Level (excluding workouts)</label>
+                    <div className="activity-group">
+                        <button 
+                            type="button"
+                            className={`activity-button ${data.activity === 'sedentary' ? 'selected' : ''}`}
+                            onClick={() => setData({...data, activity: 'sedentary'})}
+                        >
+                            Sedentary
+                            <div className="activity-description">
+                                Desk job, little to no exercise, and no strenuous hobbies. 
+                                • Sitting most of the day
+                                • Little walking
+                                • No physically demanding tasks
+                                Multiplier: 1.2
+                            </div>
+                        </button>
+                        
+                        <button 
+                            type="button"
+                            className={`activity-button ${data.activity === 'light' ? 'selected' : ''}`}
+                            onClick={() => setData({...data, activity: 'light'})}
+                        >
+                            Lightly Active
+                            <div className="activity-description">
+                                Office job with some walking during day, or standing job with little movement.
+                                • Regular daily walking
+                                • Standing or moving 2-3 hours per day
+                                • Light housework
+                                Multiplier: 1.375
+                            </div>
+                        </button>
+                        
+                        <button 
+                            type="button"
+                            className={`activity-button ${data.activity === 'moderate' ? 'selected' : ''}`}
+                            onClick={() => setData({...data, activity: 'moderate'})}
+                        >
+                            Moderately Active
+                            <div className="activity-description">
+                                Job with physical activity or daily walking/standing requirements.
+                                • Retail worker
+                                • Teacher
+                                • Construction (light work)
+                                • Most stay-at-home parents
+                                Multiplier: 1.55
+                            </div>
+                        </button>
+                        
+                        <button 
+                            type="button"
+                            className={`activity-button ${data.activity === 'very' ? 'selected' : ''}`}
+                            onClick={() => setData({...data, activity: 'very'})}
+                        >
+                            Very Active
+                            <div className="activity-description">
+                                Physically demanding job or highly active lifestyle.
+                                • Construction (heavy work)
+                                • Farmer
+                                • Professional athlete
+                                • Full-time athlete
+                                Multiplier: 1.725
+                            </div>
+                        </button>
+                    </div>
+                    <div style={{marginTop: '10px', fontSize: '14px', color: '#666'}}>
+                        Note: Do not include workout activity here. Select based on your regular daily activity level only.
+                    </div>
+                </div>
+
+                {/* Goal Selection */}
+                <div className="form-group">
+                    <label>Goal</label>
+                    <select 
+                        className="input-field"
+                        value={data.goal}
+                        onChange={e => setData({...data, goal: e.target.value})}
+                    >
+                        <option value="">Select Goal</option>
+                        <option value="lose">Lose Fat</option>
+                        <option value="maintain">Maintain</option>
+                        <option value="gain">Gain Muscle</option>
+                    </select>
+                </div>
+
+                <button type="submit" className="button">Calculate Macros</button>
+            </form>
