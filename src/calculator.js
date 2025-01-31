@@ -56,3 +56,80 @@ const Calculator = () => {
             calorieAdjustment
         });
     };
+// Update macros calculation
+    const updateMacros = (calories, currentLeanMass = leanMass, energyData = null) => {
+        const protein = Math.round(currentLeanMass * proteinMultiplier);
+        const carbs = customCarbs;
+        const fat = Math.max(0, Math.round((calories - (protein * 4) - (carbs * 4)) / 9));
+
+        setResults({
+            calories: Math.round(calories),
+            protein,
+            carbs,
+            fat,
+            energyData
+        });
+    };
+
+    // Effect hook for customization updates
+    React.useEffect(() => {
+        if (results) {
+            updateMacros(results.calories);
+        }
+    }, [customCarbs, proteinMultiplier]);
+
+    // Component render
+    return (
+        <div className="calculator-card">
+            <form onSubmit={calculate}>
+                {/* Gender Selection */}
+                <div className="form-group">
+                    <label>Gender</label>
+                    <div className="gender-group">
+                        <button 
+                            type="button"
+                            className={`gender-button ${data.gender === 'male' ? 'selected' : ''}`}
+                            onClick={() => setData({...data, gender: 'male'})}
+                        >
+                            Male
+                        </button>
+                        <button 
+                            type="button"
+                            className={`gender-button ${data.gender === 'female' ? 'selected' : ''}`}
+                            onClick={() => setData({...data, gender: 'female'})}
+                        >
+                            Female
+                        </button>
+                    </div>
+                </div>
+
+                {/* Basic Measurements */}
+                <div className="form-group number-input-group">
+                    <label>Weight (lbs)</label>
+                    <input 
+                        type="number"
+                        className="input-field"
+                        value={data.weight}
+                        onChange={e => setData({...data, weight: e.target.value})}
+                    />
+                </div>
+
+                <div className="form-group number-input-group">
+                    <label>Height (inches)</label>
+                    <input 
+                        type="number"
+                        className="input-field"
+                        value={data.height}
+                        onChange={e => setData({...data, height: e.target.value})}
+                    />
+                </div>
+
+                <div className="form-group number-input-group">
+                    <label>Body Fat %</label>
+                    <input 
+                        type="number"
+                        className="input-field"
+                        value={data.bodyFat}
+                        onChange={e => setData({...data, bodyFat: e.target.value})}
+                    />
+                </div>
