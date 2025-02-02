@@ -495,12 +495,16 @@ const Calculator = () => {
                                 <input 
                                     type="number"
                                     className="input-field"
-                                    value={proteinMultiplier}
+                                    value={proteinMultiplier === '' ? '' : proteinMultiplier}
                                     onChange={(e) => {
                                         const value = e.target.value;
-                                        // Allow empty string (while typing) or valid numbers
-                                        if (value === '' || (!isNaN(value) && parseFloat(value) >= 0)) {
-                                            setProteinMultiplier(value === '' ? '' : parseFloat(value));
+                                        if (value === '') {
+                                            setProteinMultiplier('');
+                                        } else {
+                                            const num = parseFloat(value);
+                                            if (!isNaN(num) && num >= 0) {
+                                                setProteinMultiplier(num);
+                                            }
                                         }
                                     }}
                                     min="0"
@@ -517,9 +521,20 @@ const Calculator = () => {
                                 <input 
                                     type="number"
                                     className="input-field"
-                                    value={customCarbs}
-                                    onChange={(e) => setCustomCarbs(parseInt(e.target.value) || 0)}
+                                    value={customCarbs === '' ? '' : customCarbs}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (value === '') {
+                                            setCustomCarbs('');
+                                        } else {
+                                            const num = parseInt(value);
+                                            if (!isNaN(num) && num >= 0) {
+                                                setCustomCarbs(num);
+                                            }
+                                        }
+                                    }}
                                     min="0"
+                                    placeholder="120"
                                 />
                             </div>
                         </div>
