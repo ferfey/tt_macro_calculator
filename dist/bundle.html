@@ -28,19 +28,6 @@
     margin-bottom: 20px;
 }
 
-.number-input-group {
-    max-width: 120px;
-}
-
-.input-field {
-    width: 100%;
-    padding: 10px 15px;
-    margin: 5px 0;
-    border: 1px solid #cbd5e0;
-    border-radius: 4px;
-    font-size: 16px;
-}
-  <style>
 .gender-group {
     display: flex;
     gap: 20px;
@@ -69,6 +56,26 @@
 .gender-button.selected {
     background: #2c3e50;
     color: white;
+}
+
+.measurements-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 600px;
+}
+
+.number-input-group {
+    max-width: 120px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 5px 0;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 .activity-group {
@@ -286,33 +293,36 @@ const Calculator = () => {
                 </div>
 
                 {/* Basic Measurements */}
-                <div className="form-group number-input-group">
-                    <label>Weight (lbs)</label>
-                    <input 
-                        type="number"
-                        className="input-field"
-                        value={data.weight}
-                        onChange={e => setData({...data, weight: e.target.value})}
-                    />
-                </div>
+                <div className="measurements-group">
+                    <div className="form-group number-input-group">
+                        <label>Weight (lbs)</label>
+                        <input 
+                            type="number"
+                            className="input-field"
+                            value={data.weight}
+                            onChange={e => setData({...data, weight: e.target.value})}
+                        />
+                    </div>
 
-                <div className="form-group number-input-group">
-                    <label>Height (inches)</label>
-                    <input 
-                        type="number"
-                        className="input-field"
-                        value={data.height}
-                        onChange={e => setData({...data, height: e.target.value})}
-                    />
-                </div>
-              <div className="form-group number-input-group">
-                    <label>Body Fat %</label>
-                    <input 
-                        type="number"
-                        className="input-field"
-                        value={data.bodyFat}
-                        onChange={e => setData({...data, bodyFat: e.target.value})}
-                    />
+                    <div className="form-group number-input-group">
+                        <label>Height (inches)</label>
+                        <input 
+                            type="number"
+                            className="input-field"
+                            value={data.height}
+                            onChange={e => setData({...data, height: e.target.value})}
+                        />
+                    </div>
+
+                    <div className="form-group number-input-group">
+                        <label>Body Fat %</label>
+                        <input 
+                            type="number"
+                            className="input-field"
+                            value={data.bodyFat}
+                            onChange={e => setData({...data, bodyFat: e.target.value})}
+                        />
+                    </div>
                 </div>
 
                 {/* Activity Level Selection */}
@@ -348,7 +358,7 @@ const Calculator = () => {
                                 Multiplier: 1.375
                             </div>
                         </button>
-                      <button 
+                        <button 
                             type="button"
                             className={`activity-button ${data.activity === 'moderate' ? 'selected' : ''}`}
                             onClick={() => setData({...data, activity: 'moderate'})}
@@ -402,7 +412,7 @@ const Calculator = () => {
 
                 <button type="submit" className="button">Calculate Macros</button>
             </form>
-          {/* Results Section */}
+            {/* Results Section */}
             {results && (
                 <div className="results">
                     <h3>Your Results</h3>
@@ -436,7 +446,7 @@ const Calculator = () => {
                             </div>
                         </div>
                     </div>
-                  {/* Macronutrient Breakdown */}
+                    {/* Macronutrient Breakdown */}
                     <div>
                         <h4 style={{marginBottom: '10px'}}>Macronutrient Targets</h4>
                         <div className="macro-result">
