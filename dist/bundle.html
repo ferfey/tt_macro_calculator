@@ -261,17 +261,17 @@ const Calculator = () => {
     };
     // Updates macro calculations based on user customizations
     const updateMacros = (calories, currentLeanMass = leanMass, energyData = null) => {
-        const protein = Math.round(currentLeanMass * proteinMultiplier);
-        const carbs = customCarbs;
+        const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
+        const carbs = parseInt(customCarbs);
         const fat = Math.max(0, Math.round((calories - (protein * 4) - (carbs * 4)) / 9));
 
-        setResults({
+        setResults(prevResults => ({
             calories: Math.round(calories),
             protein,
             carbs,
             fat,
-            energyData
-        });
+            energyData: energyData || prevResults.energyData  // Preserve existing energyData if none provided
+        }));
     };
 
     // Effect hook for updating macros when customizations change
