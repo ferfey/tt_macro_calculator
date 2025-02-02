@@ -9,7 +9,7 @@
 <!-- Styles -->
 <style>
 #macro-calculator {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -101,6 +101,7 @@
 
 .activity-button {
     flex: 1;
+    max-width: 50%;
     padding: 12px 24px;
     border: 2px solid #2c3e50;
     border-radius: 4px;
@@ -163,16 +164,16 @@
 }
 
 .results {
-    margin-top: 25px;
-    padding: 25px;
+    margin-top: 20px;
+    padding: 20px;
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
 }
 
 .macro-result {
-    padding: 12px;
-    margin: 8px 0;
+    padding: 8px;
+    margin: 4px 0;
     background: #f7fafc;
     border-radius: 4px;
     font-size: 16px;
@@ -434,9 +435,21 @@ const Calculator = () => {
                     <h3>Your Results</h3>
                     
                     {/* Energy Breakdown Section */}
-                    <div style={{marginBottom: '20px', padding: '15px', background: '#f8fafc', borderRadius: '4px'}}>
-                        <h4 style={{marginTop: 0, marginBottom: '10px'}}>Energy Breakdown</h4>
-                        <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                    <div style={{
+                        marginBottom: '15px',
+                        padding: '12px',
+                        background: '#f8fafc',
+                        borderRadius: '4px'
+                    }}>
+                        <h4 style={{
+                            marginTop: 0,
+                            marginBottom: '8px'
+                        }}>Energy Breakdown</h4>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '4px'
+                        }}>
                             <div className="macro-result">
                                 <span>Base Metabolic Rate (BMR):</span>
                                 <span>{results.energyData.bmr} calories</span>
