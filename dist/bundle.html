@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<div class="macro-calculator-wrapper">
 <div id="macro-calculator"></div>
 
 <!-- React Dependencies -->
@@ -8,7 +9,12 @@
 
 <!-- Styles -->
 <style>
-#macro-calculator {
+.macro-calculator-wrapper {
+    /* Add this to isolate our styles */
+    all: initial;
+}
+
+.macro-calculator-wrapper #macro-calculator {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -682,3 +688,5 @@ const Calculator = () => {
 // Render the calculator
 ReactDOM.render(<Calculator />, document.getElementById('macro-calculator'));
 </script>
+
+</div>
