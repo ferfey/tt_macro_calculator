@@ -344,23 +344,19 @@ const Calculator = () => {
         const carbs = parseInt(customCarbs);
         const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
 
-        console.log('Energy Data:', energyData);
-        console.log('Adjusted Calories:', adjustedCalories);
-
         setResults(prevResults => {
             const newResults = {
                 calories: Math.round(adjustedCalories),
                 protein,
                 carbs,
                 fat,
-                energyData: {
-                    ...energyData,
-                    calorieAdjustment: energyData && energyData.calorieAdjustment !== undefined 
-                        ? energyData.calorieAdjustment 
-                        : (prevResults && prevResults.energyData ? prevResults.energyData.calorieAdjustment : 0)
-                }
+                energyData: energyData ? {
+                    bmr: energyData.bmr,
+                    activityCalories: energyData.activityCalories,
+                    tdee: energyData.tdee,
+                    calorieAdjustment: energyData.calorieAdjustment
+                } : prevResults.energyData
             };
-            console.log('New Results:', newResults);
             return newResults;
         });
     };
