@@ -30,7 +30,7 @@
 
 .gender-group {
     display: flex;
-    gap: 50px;
+    gap: 20px;
     margin: 10px 0;
     justify-content: flex-start;
     align-items: flex-start;
@@ -194,6 +194,18 @@ label {
 
 .input-field.warning {
     border-color: #e53e3e;
+}
+
+.activity-description-box {
+    flex: 1;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 4px;
+    min-height: 200px;  // Fixed height to prevent jumping
+    font-size: 14px;    // Consistent font size
+    line-height: 1.5;   // Consistent line height
+    white-space: pre-line;
+    border: 1px solid #e2e8f0;
 }
 </style>
 
@@ -416,14 +428,7 @@ const Calculator = () => {
                                 Very Active
                             </button>
                         </div>
-                        <div style={{ 
-                            flex: '1',
-                            padding: '15px',
-                            background: '#f8fafc',
-                            borderRadius: '4px',
-                            minHeight: '100%',
-                            whiteSpace: 'pre-line'
-                        }}>
+                        <div className="activity-description-box">
                             {hoverDescription || 'Hover over an activity level to see its description'}
                         </div>
                     </div>
