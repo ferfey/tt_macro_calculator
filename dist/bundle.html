@@ -335,12 +335,18 @@ const Calculator = () => {
                               data.goal === 'gain' ? 20 : 0
         };
 
-        console.log('Energy Data in calculate:', energyData);
+        console.log('Calculate function - BMR:', bmr);
+        console.log('Calculate function - Activity Calories:', activityCalories);
+        console.log('Calculate function - TDEE:', tdee);
+        console.log('Calculate function - Energy Data:', energyData);
         updateMacros(targetCalories, calculatedLeanMass, energyData);
     };
     // Updates macro calculations based on user customizations
     const updateMacros = (calories, currentLeanMass = leanMass, energyData = null) => {
+        console.log('UpdateMacros - Received energyData:', energyData);
+        
         const adjustedCalories = calories * (1 + (calorieAdjustment / 100));
+        console.log('UpdateMacros - Adjusted Calories:', adjustedCalories);
         
         const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
         const carbs = parseInt(customCarbs);
@@ -354,7 +360,8 @@ const Calculator = () => {
             energyData: energyData
         };
         
-        console.log('Setting Results:', newResults);
+        console.log('UpdateMacros - Setting Results:', newResults);
+        console.log('UpdateMacros - EnergyData in Results:', newResults.energyData);
         setResults(newResults);
     };
 
