@@ -264,6 +264,25 @@ label {
     color: #666;
     font-size: 14px;
 }
+
+.navy-measurements {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.measurement-input {
+    margin-bottom: 10px;
+}
+
+.estimated-bf {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f7fafc;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+}
 </style>
 
 <!-- React Component -->
@@ -277,7 +296,8 @@ const Calculator = () => {
         height: '',
         bodyFat: '',
         activity: '',
-        goal: ''
+        goal: '',
+        bodyFatMethod: 'direct'
     });
     const [results, setResults] = React.useState(null);
     const [showCustomize, setShowCustomize] = React.useState(false);
@@ -392,6 +412,27 @@ const Calculator = () => {
         }
     }, [customCarbs, proteinMultiplier, calorieAdjustment]);
 
+    // Add this before the Calculator component
+    const calculateNavyBodyFat = (data) => {
+        if (!data.waist || !data.neck || (data.gender === 'female' && !data.hip)) {
+            return '';
+        }
+
+        const waist = parseFloat(data.waist);
+        const neck = parseFloat(data.neck);
+        
+        if (data.gender === 'male') {
+            // Male Formula
+            const bodyFat = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(data.height) + 36.76;
+            return Math.round(bodyFat * 10) / 10;
+        } else {
+            // Female Formula
+            const hip = parseFloat(data.hip);
+            const bodyFat = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(data.height) - 78.387;
+            return Math.round(bodyFat * 10) / 10;
+        }
+    };
+
     // Component render
     return (
         <div className="calculator-card">
@@ -442,12 +483,91 @@ const Calculator = () => {
 
                         <div className="form-group number-input-group">
                             <label>Body Fat %</label>
-                            <input 
-                                type="number"
-                                className="input-field"
-                                value={data.bodyFat}
-                                onChange={e => setData({...data, bodyFat: e.target.value})}
-                            />
+                            <div style={{marginBottom: '10px'}}>
+                                <select 
+                                    className="input-field"
+                                    value={data.bodyFatMethod || 'direct'}
+                                    onChange={e => setData({...data, bodyFatMethod: e.target.value})}
+                                >
+                                    <option value="direct">Direct Input</option>
+                                    <option value="navy">Navy Method</option>
+                                </select>
+                            </div>
+                            
+                            {data.bodyFatMethod === 'direct' ? (
+                                <input 
+                                    type="number"
+                                    className="input-field"
+                                    value={data.bodyFat}
+                                    onChange={e => setData({...data, bodyFat: e.target.value})}
+                                    placeholder="Enter body fat %"
+                                />
+                            ) : (
+                                <div className="navy-measurements">
+                                    <div className="measurement-input">
+                                        <label>Waist (inches)</label>
+                                        <input 
+                                            type="number"
+                                            className="input-field"
+                                            value={data.waist || ''}
+                                            onChange={e => {
+                                                const waist = e.target.value;
+                                                setData({
+                                                    ...data, 
+                                                    waist,
+                                                    bodyFat: calculateNavyBodyFat({
+                                                        ...data,
+                                                        waist
+                                                    })
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="measurement-input">
+                                        <label>Neck (inches)</label>
+                                        <input 
+                                            type="number"
+                                            className="input-field"
+                                            value={data.neck || ''}
+                                            onChange={e => {
+                                                const neck = e.target.value;
+                                                setData({
+                                                    ...data, 
+                                                    neck,
+                                                    bodyFat: calculateNavyBodyFat({
+                                                        ...data,
+                                                        neck
+                                                    })
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    {data.gender === 'female' && (
+                                        <div className="measurement-input">
+                                            <label>Hip (inches)</label>
+                                            <input 
+                                                type="number"
+                                                className="input-field"
+                                                value={data.hip || ''}
+                                                onChange={e => {
+                                                    const hip = e.target.value;
+                                                    setData({
+                                                        ...data, 
+                                                        hip,
+                                                        bodyFat: calculateNavyBodyFat({
+                                                            ...data,
+                                                            hip
+                                                        })
+                                                    });
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                    <div className="estimated-bf">
+                                        Estimated Body Fat: {data.bodyFat || 0}%
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
