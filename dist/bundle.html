@@ -327,38 +327,35 @@ const Calculator = () => {
             setCalorieAdjustment(0);
         }
 
-        updateMacros(targetCalories, calculatedLeanMass, {
+        const energyData = {
             bmr: Math.round(bmr),
             activityCalories: Math.round(activityCalories),
             tdee: Math.round(tdee),
             calorieAdjustment: data.goal === 'lose' ? -20 : 
-                               data.goal === 'gain' ? 20 : 0
-        });
+                              data.goal === 'gain' ? 20 : 0
+        };
+
+        console.log('Energy Data in calculate:', energyData);
+        updateMacros(targetCalories, calculatedLeanMass, energyData);
     };
     // Updates macro calculations based on user customizations
     const updateMacros = (calories, currentLeanMass = leanMass, energyData = null) => {
-        // Apply the custom calorie adjustment
         const adjustedCalories = calories * (1 + (calorieAdjustment / 100));
         
         const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
         const carbs = parseInt(customCarbs);
         const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
 
-        setResults(prevResults => {
-            const newResults = {
-                calories: Math.round(adjustedCalories),
-                protein,
-                carbs,
-                fat,
-                energyData: energyData ? {
-                    bmr: energyData.bmr,
-                    activityCalories: energyData.activityCalories,
-                    tdee: energyData.tdee,
-                    calorieAdjustment: energyData.calorieAdjustment
-                } : prevResults.energyData
-            };
-            return newResults;
-        });
+        const newResults = {
+            calories: Math.round(adjustedCalories),
+            protein,
+            carbs,
+            fat,
+            energyData: energyData
+        };
+        
+        console.log('Setting Results:', newResults);
+        setResults(newResults);
     };
 
     // Effect hook for updating macros when customizations change
