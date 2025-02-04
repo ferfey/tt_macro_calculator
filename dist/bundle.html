@@ -333,6 +333,53 @@ label {
     border-top: 1px solid #e2e8f0;
     padding-top: 15px;
 }
+
+.gender-toggle {
+    position: relative;
+    width: 200px;
+    height: 40px;
+    background: #f8fafc;
+    border: 2px solid #2c3e50;
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.gender-toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: #2c3e50;
+    transition: transform 0.3s ease;
+}
+
+.gender-toggle.female .gender-toggle-slider {
+    transform: translateX(100%);
+}
+
+.gender-toggle-labels {
+    position: relative;
+    display: flex;
+    height: 100%;
+    z-index: 1;
+}
+
+.gender-toggle-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2c3e50;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.gender-toggle-label.active {
+    color: white;
+}
 </style>
 
 <!-- React Component -->
@@ -580,48 +627,44 @@ const Calculator = () => {
                     </div>
                     {openSections.basics && (
                         <div style={accordionStyles.content}>
-                            {/* Gender, Weight, Height inputs */}
-                            <div className="form-group">
+                            <div className="form-group" style={{marginBottom: '15px'}}>
                                 <label>Gender</label>
-                                <div className="gender-group">
-                                    <button 
-                                        type="button"
-                                        className={`gender-button ${data.gender === 'male' ? 'selected' : ''}`}
-                                        onClick={() => setData({...data, gender: 'male'})}
-                                    >
-                                        Male
-                                    </button>
-                                    <button 
-                                        type="button"
-                                        className={`gender-button ${data.gender === 'female' ? 'selected' : ''}`}
-                                        onClick={() => setData({...data, gender: 'female'})}
-                                    >
-                                        Female
-                                    </button>
-                                </div>
+                                <button 
+                                    type="button"
+                                    className={`gender-toggle ${data.gender === 'female' ? 'female' : ''}`}
+                                    onClick={() => setData({...data, gender: data.gender === 'male' ? 'female' : 'male'})}
+                                >
+                                    <div className="gender-toggle-slider" />
+                                    <div className="gender-toggle-labels">
+                                        <span className={`gender-toggle-label ${data.gender === 'male' ? 'active' : ''}`}>
+                                            Male
+                                        </span>
+                                        <span className={`gender-toggle-label ${data.gender === 'female' ? 'active' : ''}`}>
+                                            Female
+                                        </span>
+                                    </div>
+                                </button>
                             </div>
 
-                            <div className="form-group">
-                                <div className="measurements-group">
-                                    <div className="form-group number-input-group">
-                                        <label>Weight (lbs)</label>
-                                        <input 
-                                            type="number"
-                                            className="input-field"
-                                            value={data.weight}
-                                            onChange={e => setData({...data, weight: e.target.value})}
-                                        />
-                                    </div>
+                            <div className="measurements-group" style={{gap: '30px'}}>
+                                <div className="form-group number-input-group">
+                                    <label>Weight (lbs)</label>
+                                    <input 
+                                        type="number"
+                                        className="input-field"
+                                        value={data.weight}
+                                        onChange={e => setData({...data, weight: e.target.value})}
+                                    />
+                                </div>
 
-                                    <div className="form-group number-input-group">
-                                        <label>Height (inches)</label>
-                                        <input 
-                                            type="number"
-                                            className="input-field"
-                                            value={data.height}
-                                            onChange={e => setData({...data, height: e.target.value})}
-                                        />
-                                    </div>
+                                <div className="form-group number-input-group">
+                                    <label>Height (inches)</label>
+                                    <input 
+                                        type="number"
+                                        className="input-field"
+                                        value={data.height}
+                                        onChange={e => setData({...data, height: e.target.value})}
+                                    />
                                 </div>
                             </div>
                         </div>
