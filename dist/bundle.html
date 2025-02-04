@@ -343,10 +343,7 @@ const Calculator = () => {
     };
     // Updates macro calculations based on user customizations
     const updateMacros = (calories, currentLeanMass = leanMass, energyData = null) => {
-        console.log('UpdateMacros - Received energyData:', energyData);
-        
         const adjustedCalories = calories * (1 + (calorieAdjustment / 100));
-        console.log('UpdateMacros - Adjusted Calories:', adjustedCalories);
         
         const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
         const carbs = parseInt(customCarbs);
@@ -357,11 +354,14 @@ const Calculator = () => {
             protein,
             carbs,
             fat,
-            energyData: energyData || (results ? results.energyData : null)
+            energyData: energyData || (results && results.energyData ? {...results.energyData} : {
+                bmr: 0,
+                activityCalories: 0,
+                tdee: 0,
+                calorieAdjustment: calorieAdjustment
+            })
         };
         
-        console.log('UpdateMacros - Setting Results:', newResults);
-        console.log('UpdateMacros - EnergyData in Results:', newResults.energyData);
         setResults(newResults);
     };
 
@@ -552,22 +552,22 @@ const Calculator = () => {
                         }}>
                             <div className="macro-result">
                                 <span>Base Metabolic Rate (BMR):</span>
-                                <span>{results.energyData.bmr} calories</span>
+                                <span>{results.energyData?.bmr || 0} calories</span>
                             </div>
                             <div className="macro-result">
                                 <span>Activity Calories:</span>
-                                <span>+{results.energyData.activityCalories} calories</span>
+                                <span>+{results.energyData?.activityCalories || 0} calories</span>
                             </div>
                             <div className="macro-result" style={{fontWeight: 'bold'}}>
                                 <span>Total Daily Energy Expenditure:</span>
-                                <span>{results.energyData.tdee} calories</span>
+                                <span>{results.energyData?.tdee || 0} calories</span>
                             </div>
                             <div className="macro-result" style={{
-                                color: results.energyData.calorieAdjustment === 0 ? '#2c3e50' :
-                                      results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
+                                color: (!results.energyData?.calorieAdjustment) ? '#2c3e50' :
+                                       results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
                             }}>
                                 <span>Goal Adjustment:</span>
-                                <span>{results.energyData.calorieAdjustment > 0 ? '+' : ''}{results.energyData.calorieAdjustment}%</span>
+                                <span>{results.energyData?.calorieAdjustment > 0 ? '+' : ''}{results.energyData?.calorieAdjustment || 0}%</span>
                             </div>
                             <div className="macro-result" style={{fontWeight: 'bold', fontSize: '18px'}}>
                                 <span>Target Daily Calories:</span>
