@@ -318,6 +318,11 @@ const Calculator = () => {
         
         Each activity level has a different calorie multiplier that affects your total daily energy expenditure.
     `);
+    const [openSections, setOpenSections] = React.useState({
+        basics: true,
+        bodyComp: false,
+        activity: false
+    });
 
     // Add measurement instructions
     const measurementInstructions = {
@@ -329,6 +334,32 @@ const Calculator = () => {
             waist: "Measure your natural waist at the narrowest point between your lower rib and the top of your hip bone, keeping the tape parallel to the floor.",
             neck: "Measure around your neck at the point just below the larynx, keeping the tape perpendicular to the long axis of your neck.",
             hip: "Measure around the widest part of your hips/buttocks, keeping the tape parallel to the floor."
+        }
+    };
+
+    // Add accordion styles
+    const accordionStyles = {
+        section: {
+            border: '1px solid #e2e8f0',
+            borderRadius: '4px',
+            marginBottom: '10px'
+        },
+        header: {
+            padding: '15px',
+            background: '#f8fafc',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+        },
+        content: {
+            padding: '20px',
+            borderTop: '1px solid #e2e8f0'
+        },
+        title: {
+            margin: 0,
+            fontSize: '16px',
+            fontWeight: '500'
         }
     };
 
@@ -478,52 +509,77 @@ const Calculator = () => {
     return (
         <div className="calculator-card">
             <form onSubmit={calculate}>
-                {/* Gender Selection */}
-                <div className="form-group">
-                    <label>Gender</label>
-                    <div className="gender-group">
-                        <button 
-                            type="button"
-                            className={`gender-button ${data.gender === 'male' ? 'selected' : ''}`}
-                            onClick={() => setData({...data, gender: 'male'})}
-                        >
-                            Male
-                        </button>
-                        <button 
-                            type="button"
-                            className={`gender-button ${data.gender === 'female' ? 'selected' : ''}`}
-                            onClick={() => setData({...data, gender: 'female'})}
-                        >
-                            Female
-                        </button>
+                {/* Basic Information Section */}
+                <div style={accordionStyles.section}>
+                    <div 
+                        style={accordionStyles.header}
+                        onClick={() => setOpenSections({...openSections, basics: !openSections.basics})}
+                    >
+                        <h3 style={accordionStyles.title}>Basic Information</h3>
+                        <span>{openSections.basics ? '−' : '+'}</span>
                     </div>
+                    {openSections.basics && (
+                        <div style={accordionStyles.content}>
+                            {/* Gender, Weight, Height inputs */}
+                            <div className="form-group">
+                                <label>Gender</label>
+                                <div className="gender-group">
+                                    <button 
+                                        type="button"
+                                        className={`gender-button ${data.gender === 'male' ? 'selected' : ''}`}
+                                        onClick={() => setData({...data, gender: 'male'})}
+                                    >
+                                        Male
+                                    </button>
+                                    <button 
+                                        type="button"
+                                        className={`gender-button ${data.gender === 'female' ? 'selected' : ''}`}
+                                        onClick={() => setData({...data, gender: 'female'})}
+                                    >
+                                        Female
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <div className="measurements-group">
+                                    <div className="form-group number-input-group">
+                                        <label>Weight (lbs)</label>
+                                        <input 
+                                            type="number"
+                                            className="input-field"
+                                            value={data.weight}
+                                            onChange={e => setData({...data, weight: e.target.value})}
+                                        />
+                                    </div>
+
+                                    <div className="form-group number-input-group">
+                                        <label>Height (inches)</label>
+                                        <input 
+                                            type="number"
+                                            className="input-field"
+                                            value={data.height}
+                                            onChange={e => setData({...data, height: e.target.value})}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                {/* Basic Measurements */}
-                <div className="form-group">
-                    <div className="measurements-group">
-                        <div className="form-group number-input-group">
-                            <label>Weight (lbs)</label>
-                            <input 
-                                type="number"
-                                className="input-field"
-                                value={data.weight}
-                                onChange={e => setData({...data, weight: e.target.value})}
-                            />
-                        </div>
-
-                        <div className="form-group number-input-group">
-                            <label>Height (inches)</label>
-                            <input 
-                                type="number"
-                                className="input-field"
-                                value={data.height}
-                                onChange={e => setData({...data, height: e.target.value})}
-                            />
-                        </div>
-
-                        <div className="form-group number-input-group">
-                            <label>Body Fat %</label>
+                {/* Body Composition Section */}
+                <div style={accordionStyles.section}>
+                    <div 
+                        style={accordionStyles.header}
+                        onClick={() => setOpenSections({...openSections, bodyComp: !openSections.bodyComp})}
+                    >
+                        <h3 style={accordionStyles.title}>Body Composition</h3>
+                        <span>{openSections.bodyComp ? '−' : '+'}</span>
+                    </div>
+                    {openSections.bodyComp && (
+                        <div style={accordionStyles.content}>
+                            {/* Body Fat % method selection and inputs */}
                             <div style={{marginBottom: '10px'}}>
                                 <select 
                                     className="input-field"
@@ -626,104 +682,119 @@ const Calculator = () => {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    )}
                 </div>
 
-                {/* Activity Level Selection */}
-                <div className="form-group">
-                    <label>Daily Activity Level (excluding workouts)</label>
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                        <div className="activity-group" style={{ flex: '0 0 50%' }}>
-                            <button 
-                                type="button"
-                                className={`activity-button ${data.activity === 'sedentary' ? 'selected' : ''}`}
-                                onClick={() => setData({...data, activity: 'sedentary'})}
-                                onMouseEnter={() => setHoverDescription(`
-                                    Desk job, little to no exercise, and no strenuous hobbies. 
-                                    • Sitting most of the day
-                                    • Little walking
-                                    • No physically demanding tasks
-                                    Multiplier: 1.2
-                                `)}
-                            >
-                                Sedentary
-                            </button>
-                            <button 
-                                type="button"
-                                className={`activity-button ${data.activity === 'light' ? 'selected' : ''}`}
-                                onClick={() => setData({...data, activity: 'light'})}
-                                onMouseEnter={() => setHoverDescription(`
-                                    Office job with some walking during day, or standing job with little movement.
-                                    • Regular daily walking
-                                    • Standing or moving 2-3 hours per day
-                                    • Light housework
-                                    Multiplier: 1.375
-                                `)}
-                            >
-                                Lightly Active
-                            </button>
-                            <button 
-                                type="button"
-                                className={`activity-button ${data.activity === 'moderate' ? 'selected' : ''}`}
-                                onClick={() => setData({...data, activity: 'moderate'})}
-                                onMouseEnter={() => setHoverDescription(`
-                                    Job with physical activity or daily walking/standing requirements.
-                                    • Retail worker
-                                    • Teacher
-                                    • Construction (light work)
-                                    • Most stay-at-home parents
-                                    Multiplier: 1.55
-                                `)}
-                            >
-                                Moderately Active
-                            </button>
-                            <button 
-                                type="button"
-                                className={`activity-button ${data.activity === 'very' ? 'selected' : ''}`}
-                                onClick={() => setData({...data, activity: 'very'})}
-                                onMouseEnter={() => setHoverDescription(`
-                                    Physically demanding job or highly active lifestyle.
-                                    • Construction (heavy work)
-                                    • Farmer
-                                    • Professional athlete
-                                    • Full-time athlete
-                                    Multiplier: 1.725
-                                `)}
-                            >
-                                Very Active
-                            </button>
-                        </div>
-                        <div className="activity-description-box">
-                            {hoverDescription || 'Hover over an activity level to see its description'}
-                        </div>
-                    </div>
-                    <div style={{marginTop: '10px', fontSize: '14px', color: '#666'}}>
-                        Note: Do not include workout activity here. Select based on your regular daily activity level only.
-                    </div>
-                </div>
-
-                {/* Goal Selection */}
-                <div className="form-group">
-                    <label>Goal</label>
-                    <select 
-                        className="input-field"
-                        value={data.goal}
-                        onChange={e => setData({...data, goal: e.target.value})}
+                {/* Activity & Goals Section */}
+                <div style={accordionStyles.section}>
+                    <div 
+                        style={accordionStyles.header}
+                        onClick={() => setOpenSections({...openSections, activity: !openSections.activity})}
                     >
-                        <option value="">Select Goal</option>
-                        <option value="lose">Lose Fat</option>
-                        <option value="maintain">Maintain</option>
-                        <option value="gain">Gain Muscle</option>
-                    </select>
+                        <h3 style={accordionStyles.title}>Activity & Goals</h3>
+                        <span>{openSections.activity ? '−' : '+'}</span>
+                    </div>
+                    {openSections.activity && (
+                        <div style={accordionStyles.content}>
+                            {/* Activity level and goals selection */}
+                            <div className="form-group">
+                                <label>Daily Activity Level (excluding workouts)</label>
+                                <div style={{ display: 'flex', gap: '20px' }}>
+                                    <div className="activity-group" style={{ flex: '0 0 50%' }}>
+                                        <button 
+                                            type="button"
+                                            className={`activity-button ${data.activity === 'sedentary' ? 'selected' : ''}`}
+                                            onClick={() => setData({...data, activity: 'sedentary'})}
+                                            onMouseEnter={() => setHoverDescription(`
+                                                Desk job, little to no exercise, and no strenuous hobbies. 
+                                                • Sitting most of the day
+                                                • Little walking
+                                                • No physically demanding tasks
+                                                Multiplier: 1.2
+                                            `)}
+                                        >
+                                            Sedentary
+                                        </button>
+                                        <button 
+                                            type="button"
+                                            className={`activity-button ${data.activity === 'light' ? 'selected' : ''}`}
+                                            onClick={() => setData({...data, activity: 'light'})}
+                                            onMouseEnter={() => setHoverDescription(`
+                                                Office job with some walking during day, or standing job with little movement.
+                                                • Regular daily walking
+                                                • Standing or moving 2-3 hours per day
+                                                • Light housework
+                                                Multiplier: 1.375
+                                            `)}
+                                        >
+                                            Lightly Active
+                                        </button>
+                                        <button 
+                                            type="button"
+                                            className={`activity-button ${data.activity === 'moderate' ? 'selected' : ''}`}
+                                            onClick={() => setData({...data, activity: 'moderate'})}
+                                            onMouseEnter={() => setHoverDescription(`
+                                                Job with physical activity or daily walking/standing requirements.
+                                                • Retail worker
+                                                • Teacher
+                                                • Construction (light work)
+                                                • Most stay-at-home parents
+                                                Multiplier: 1.55
+                                            `)}
+                                        >
+                                            Moderately Active
+                                        </button>
+                                        <button 
+                                            type="button"
+                                            className={`activity-button ${data.activity === 'very' ? 'selected' : ''}`}
+                                            onClick={() => setData({...data, activity: 'very'})}
+                                            onMouseEnter={() => setHoverDescription(`
+                                                Physically demanding job or highly active lifestyle.
+                                                • Construction (heavy work)
+                                                • Farmer
+                                                • Professional athlete
+                                                • Full-time athlete
+                                                Multiplier: 1.725
+                                            `)}
+                                        >
+                                            Very Active
+                                        </button>
+                                    </div>
+                                    <div className="activity-description-box">
+                                        {hoverDescription || 'Hover over an activity level to see its description'}
+                                    </div>
+                                </div>
+                                <div style={{marginTop: '10px', fontSize: '14px', color: '#666'}}>
+                                    Note: Do not include workout activity here. Select based on your regular daily activity level only.
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Goal</label>
+                                <select 
+                                    className="input-field"
+                                    value={data.goal}
+                                    onChange={e => setData({...data, goal: e.target.value})}
+                                >
+                                    <option value="">Select Goal</option>
+                                    <option value="lose">Lose Fat</option>
+                                    <option value="maintain">Maintain</option>
+                                    <option value="gain">Gain Muscle</option>
+                                </select>
+                            </div>
+
+                            {data.bodyFatMethod === 'navy' && (
+                                <div style={{fontSize: '12px', color: '#666', marginTop: '4px', marginBottom: '10px'}}>
+                                    Note: The Navy Method is accurate within ±3-4% of underwater weighing when measurements are taken correctly.
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
-                {data.bodyFatMethod === 'navy' && (
-                    <div style={{fontSize: '12px', color: '#666', marginTop: '4px', marginBottom: '10px'}}>
-                        Note: The Navy Method is accurate within ±3-4% of underwater weighing when measurements are taken correctly.
-                    </div>
-                )}
-
-                <button type="submit" className="button">Calculate Macros</button>
+                <button type="submit" className="button" style={{marginTop: '20px'}}>
+                    Calculate Macros
+                </button>
             </form>
             {/* Results Section */}
             {results && (
