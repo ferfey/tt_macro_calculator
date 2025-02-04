@@ -337,32 +337,29 @@ label {
 .gender-toggle {
     position: relative;
     width: 200px;
-    height: 40px;
-    background: white;
+    height: 44px;
+    background: #f8fafc;
     border: 2px solid #2c3e50;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.gender-toggle:hover {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-top: 8px;
 }
 
 .gender-toggle-slider {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
+    top: 2px;  /* Add 2px padding */
+    left: 2px;  /* Add 2px padding */
+    width: calc(50% - 4px);  /* Account for padding */
+    height: calc(100% - 4px);  /* Account for padding */
     background: #2c3e50;
+    border-radius: 6px;
     transition: transform 0.3s ease;
 }
 
 .gender-toggle.female .gender-toggle-slider {
-    transform: translateX(100%);
+    transform: translateX(calc(100% + 4px));  /* Account for padding */
 }
 
 .gender-toggle-labels {
@@ -377,9 +374,9 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #2c3e50;
+    font-size: 16px;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     padding: 0 10px;
 }
 
@@ -390,6 +387,15 @@ label {
 
 .gender-toggle-label:not(.active) {
     color: #2c3e50;
+}
+
+.gender-toggle:hover {
+    border-color: #34495e;
+    background: #ffffff;
+}
+
+.gender-toggle:hover .gender-toggle-label:not(.active) {
+    color: #34495e;
 }
 </style>
 
