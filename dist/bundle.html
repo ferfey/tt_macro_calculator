@@ -566,22 +566,23 @@ const Calculator = () => {
                         }}>
                             <div className="macro-result">
                                 <span>Base Metabolic Rate (BMR):</span>
-                                <span>{results.energyData?.bmr || 0} calories</span>
+                                <span>{(results.energyData && results.energyData.bmr) || 0} calories</span>
                             </div>
                             <div className="macro-result">
                                 <span>Activity Calories:</span>
-                                <span>+{results.energyData?.activityCalories || 0} calories</span>
+                                <span>+{(results.energyData && results.energyData.activityCalories) || 0} calories</span>
                             </div>
                             <div className="macro-result" style={{fontWeight: 'bold'}}>
                                 <span>Total Daily Energy Expenditure:</span>
-                                <span>{results.energyData?.tdee || 0} calories</span>
+                                <span>{(results.energyData && results.energyData.tdee) || 0} calories</span>
                             </div>
                             <div className="macro-result" style={{
-                                color: (!results.energyData?.calorieAdjustment) ? '#2c3e50' :
+                                color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
                                        results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
                             }}>
                                 <span>Goal Adjustment:</span>
-                                <span>{results.energyData?.calorieAdjustment > 0 ? '+' : ''}{results.energyData?.calorieAdjustment || 0}%</span>
+                                <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
+                                       ((results.energyData && results.energyData.calorieAdjustment) || 0)}%</span>
                             </div>
                             <div className="macro-result" style={{fontWeight: 'bold', fontSize: '18px'}}>
                                 <span>Target Daily Calories:</span>
