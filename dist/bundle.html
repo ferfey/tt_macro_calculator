@@ -231,7 +231,11 @@ const Calculator = () => {
     const [proteinMultiplier, setProteinMultiplier] = React.useState('1.0');
     const [leanMass, setLeanMass] = React.useState(0);
     const [calorieAdjustment, setCalorieAdjustment] = React.useState(0);
-    const [hoverDescription, setHoverDescription] = React.useState('');
+    const [hoverDescription, setHoverDescription] = React.useState(`
+        Hover over an activity level to see its description.
+        
+        Each activity level has a different calorie multiplier that affects your total daily energy expenditure.
+    `);
 
     // Calculate function - handles all the macro calculations
     const calculate = (e) => {
@@ -379,7 +383,6 @@ const Calculator = () => {
                                     • No physically demanding tasks
                                     Multiplier: 1.2
                                 `)}
-                                onMouseLeave={() => setHoverDescription('')}
                             >
                                 Sedentary
                             </button>
@@ -394,7 +397,6 @@ const Calculator = () => {
                                     • Light housework
                                     Multiplier: 1.375
                                 `)}
-                                onMouseLeave={() => setHoverDescription('')}
                             >
                                 Lightly Active
                             </button>
@@ -410,7 +412,6 @@ const Calculator = () => {
                                     • Most stay-at-home parents
                                     Multiplier: 1.55
                                 `)}
-                                onMouseLeave={() => setHoverDescription('')}
                             >
                                 Moderately Active
                             </button>
@@ -426,7 +427,6 @@ const Calculator = () => {
                                     • Full-time athlete
                                     Multiplier: 1.725
                                 `)}
-                                onMouseLeave={() => setHoverDescription('')}
                             >
                                 Very Active
                             </button>
