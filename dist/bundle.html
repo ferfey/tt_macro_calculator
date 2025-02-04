@@ -367,14 +367,28 @@ const Calculator = () => {
 
     // Effect hook for updating macros when customizations change
     React.useEffect(() => {
-        if (results && results.energyData) {
-            const energyData = {
+        if (results && results.energyData && results.energyData.tdee) {
+            const currentEnergyData = {
                 bmr: results.energyData.bmr,
                 activityCalories: results.energyData.activityCalories,
                 tdee: results.energyData.tdee,
                 calorieAdjustment: calorieAdjustment
             };
-            updateMacros(results.energyData.tdee, leanMass, energyData);
+            
+            const baseCalories = results.energyData.tdee;  // Use TDEE as base
+            const adjustedCalories = baseCalories * (1 + (calorieAdjustment / 100));
+            
+            const protein = Math.round(leanMass * parseFloat(proteinMultiplier));
+            const carbs = parseInt(customCarbs);
+            const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
+
+            setResults({
+                calories: Math.round(adjustedCalories),
+                protein,
+                carbs,
+                fat,
+                energyData: currentEnergyData
+            });
         }
     }, [customCarbs, proteinMultiplier, calorieAdjustment]);
 
