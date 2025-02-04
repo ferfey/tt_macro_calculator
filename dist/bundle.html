@@ -338,12 +338,17 @@ label {
     position: relative;
     width: 200px;
     height: 40px;
-    background: #f8fafc;
+    background: white;
     border: 2px solid #2c3e50;
     border-radius: 4px;
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.gender-toggle:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .gender-toggle-slider {
@@ -375,10 +380,16 @@ label {
     color: #2c3e50;
     font-weight: 500;
     transition: color 0.3s ease;
+    padding: 0 10px;
 }
 
 .gender-toggle-label.active {
     color: white;
+    font-weight: 600;
+}
+
+.gender-toggle-label:not(.active) {
+    color: #2c3e50;
 }
 </style>
 
