@@ -357,7 +357,7 @@ const Calculator = () => {
             protein,
             carbs,
             fat,
-            energyData: energyData
+            energyData: energyData || (results ? results.energyData : null)
         };
         
         console.log('UpdateMacros - Setting Results:', newResults);
@@ -367,10 +367,16 @@ const Calculator = () => {
 
     // Effect hook for updating macros when customizations change
     React.useEffect(() => {
-        if (results) {
-            updateMacros(results.energyData.tdee);  // Use TDEE as base calories
+        if (results && results.energyData) {
+            const energyData = {
+                bmr: results.energyData.bmr,
+                activityCalories: results.energyData.activityCalories,
+                tdee: results.energyData.tdee,
+                calorieAdjustment: calorieAdjustment
+            };
+            updateMacros(results.energyData.tdee, leanMass, energyData);
         }
-    }, [customCarbs, proteinMultiplier, calorieAdjustment]);  // Added calorieAdjustment
+    }, [customCarbs, proteinMultiplier, calorieAdjustment]);
 
     // Component render
     return (
