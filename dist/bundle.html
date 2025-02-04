@@ -452,6 +452,10 @@ const Calculator = () => {
             return '';
         }
         
+        if (waist < 20 || waist > 80) return ''; // Unrealistic waist
+        if (neck < 10 || neck > 30) return '';   // Unrealistic neck
+        if (data.gender === 'female' && (hip < 25 || hip > 80)) return ''; // Unrealistic hip
+        
         if (data.gender === 'male') {
             if (waist <= neck) {
                 return ''; // Waist must be larger than neck
@@ -611,6 +615,13 @@ const Calculator = () => {
                                     )}
                                     <div className="estimated-bf">
                                         Estimated Body Fat: {data.bodyFat || 0}%
+                                        <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
+                                            {data.gender === 'male' ? (
+                                                `Healthy range for men: 10-20%`
+                                            ) : (
+                                                `Healthy range for women: 18-28%`
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -706,9 +717,11 @@ const Calculator = () => {
                     </select>
                 </div>
 
-                <div style={{fontSize: '12px', color: '#666', marginTop: '4px', marginBottom: '10px'}}>
-                    Note: The Navy Method is accurate within ±3-4% of underwater weighing when measurements are taken correctly.
-                </div>
+                {data.bodyFatMethod === 'navy' && (
+                    <div style={{fontSize: '12px', color: '#666', marginTop: '4px', marginBottom: '10px'}}>
+                        Note: The Navy Method is accurate within ±3-4% of underwater weighing when measurements are taken correctly.
+                    </div>
+                )}
 
                 <button type="submit" className="button">Calculate Macros</button>
             </form>
