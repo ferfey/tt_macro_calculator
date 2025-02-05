@@ -1004,7 +1004,6 @@ const Calculator = () => {
         
         if (waist < 20 || waist > 80) return ''; // Unrealistic waist
         if (neck < 10 || neck > 30) return '';   // Unrealistic neck
-        if (data.gender === 'female' && (hip < 25 || hip > 80)) return ''; // Unrealistic hip
         
         if (data.gender === 'male') {
             if (waist <= neck) {
@@ -1018,6 +1017,8 @@ const Calculator = () => {
             if (isNaN(hip)) {
                 return '';
             }
+            if (hip < 25 || hip > 80) return ''; // Unrealistic hip
+            
             // Female Formula: %bf = 163.205×log10(waist+hip-neck) - 97.684×log10(height) - 78.387
             const bodyFat = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
             return Math.max(Math.round(bodyFat * 10) / 10, 10); // Minimum 10% body fat
