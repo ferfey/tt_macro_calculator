@@ -9,7 +9,7 @@
 <!-- Styles -->
 <style>
 #macro-calculator {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -99,6 +99,7 @@
 }
 
 .activity-group {
+    flex: 0 0 60%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -138,7 +139,7 @@
 
 .results {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 45% 55%;
     gap: 20px;
     margin-top: 20px;
     padding: 15px;
@@ -196,10 +197,9 @@ label {
 }
 
 .activity-description-box {
+    flex: 1;
     min-height: 150px;
     max-height: 150px;
-    padding: 12px;
-    font-size: 13px;
 }
 
 .slider-container {
@@ -466,7 +466,7 @@ label {
 /* Update results layout */
 .results {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 45% 55%;
     gap: 20px;
     margin-top: 20px;
     padding: 15px;
