@@ -264,14 +264,43 @@ label {
 
 .navy-measurements {
     display: flex;
-    flex-direction: column;
     gap: 15px;
-    max-width: 100%;
+    align-items: flex-start;
+    margin-top: 10px;
 }
 
 .measurement-input {
-    margin-bottom: 10px;
-    max-width: 300px;
+    flex: 1;
+    margin: 0;
+}
+
+.measurement-tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 4px;
+    color: #718096;
+    cursor: help;
+}
+
+.measurement-tooltip::after {
+    content: "ⓘ";
+    font-size: 12px;
+}
+
+.measurement-tooltip:hover::before {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: #2c3e50;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+    margin-bottom: 5px;
 }
 
 .estimated-bf {
@@ -1110,7 +1139,15 @@ const Calculator = () => {
                                     ) : (
                                         <div className="navy-measurements">
                                             <div className="measurement-input">
-                                                <label>Waist (inches)</label>
+                                                <label>
+                                                    Waist
+                                                    <span 
+                                                        className="measurement-tooltip" 
+                                                        data-tip={data.gender === 'male' ? 
+                                                            "Measure at belly button level" : 
+                                                            "Measure at narrowest point"}
+                                                    />
+                                                </label>
                                                 <input 
                                                     type="number"
                                                     className="input-field"
@@ -1126,13 +1163,17 @@ const Calculator = () => {
                                                             })
                                                         });
                                                     }}
+                                                    placeholder="inches"
                                                 />
-                                                <div className="measurement-instruction">
-                                                    {data.gender && measurementInstructions[data.gender].waist}
-                                                </div>
                                             </div>
                                             <div className="measurement-input">
-                                                <label>Neck (inches)</label>
+                                                <label>
+                                                    Neck
+                                                    <span 
+                                                        className="measurement-tooltip" 
+                                                        data-tip="Measure below Adam's apple"
+                                                    />
+                                                </label>
                                                 <input 
                                                     type="number"
                                                     className="input-field"
@@ -1148,14 +1189,18 @@ const Calculator = () => {
                                                             })
                                                         });
                                                     }}
+                                                    placeholder="inches"
                                                 />
-                                                <div className="measurement-instruction">
-                                                    {data.gender && measurementInstructions[data.gender].neck}
-                                                </div>
                                             </div>
                                             {data.gender === 'female' && (
                                                 <div className="measurement-input">
-                                                    <label>Hip (inches)</label>
+                                                    <label>
+                                                        Hip
+                                                        <span 
+                                                            className="measurement-tooltip" 
+                                                            data-tip="Measure at widest point"
+                                                        />
+                                                    </label>
                                                     <input 
                                                         type="number"
                                                         className="input-field"
@@ -1171,10 +1216,8 @@ const Calculator = () => {
                                                                 })
                                                             });
                                                         }}
+                                                        placeholder="inches"
                                                     />
-                                                    <div className="measurement-instruction">
-                                                        {measurementInstructions.female.hip}
-                                                    </div>
                                                 </div>
                                             )}
                                             <div className="estimated-bf">
