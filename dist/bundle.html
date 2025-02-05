@@ -1137,99 +1137,103 @@ const Calculator = () => {
                                             )}
                                         </div>
                                     ) : (
-                                        <div className="navy-measurements">
-                                            <div className="measurement-input">
-                                                <label>
-                                                    Waist
-                                                    <span 
-                                                        className="measurement-tooltip" 
-                                                        data-tip={data.gender === 'male' ? 
-                                                            "Measure at belly button level" : 
-                                                            "Measure at narrowest point"}
-                                                    />
-                                                </label>
-                                                <input 
-                                                    type="number"
-                                                    className="input-field"
-                                                    value={data.waist || ''}
-                                                    onChange={e => {
-                                                        const waist = e.target.value;
-                                                        setData({
-                                                            ...data, 
-                                                            waist,
-                                                            bodyFat: calculateNavyBodyFat({
-                                                                ...data,
-                                                                waist
-                                                            })
-                                                        });
-                                                    }}
-                                                    placeholder="inches"
-                                                />
-                                            </div>
-                                            <div className="measurement-input">
-                                                <label>
-                                                    Neck
-                                                    <span 
-                                                        className="measurement-tooltip" 
-                                                        data-tip="Measure below Adam's apple"
-                                                    />
-                                                </label>
-                                                <input 
-                                                    type="number"
-                                                    className="input-field"
-                                                    value={data.neck || ''}
-                                                    onChange={e => {
-                                                        const neck = e.target.value;
-                                                        setData({
-                                                            ...data, 
-                                                            neck,
-                                                            bodyFat: calculateNavyBodyFat({
-                                                                ...data,
-                                                                neck
-                                                            })
-                                                        });
-                                                    }}
-                                                    placeholder="inches"
-                                                />
-                                            </div>
-                                            {data.gender === 'female' && (
+                                        <div>
+                                            <div className="navy-measurements">
                                                 <div className="measurement-input">
                                                     <label>
-                                                        Hip
+                                                        Waist
                                                         <span 
                                                             className="measurement-tooltip" 
-                                                            data-tip="Measure at widest point"
+                                                            data-tip={data.gender === 'male' ? 
+                                                                "Measure at belly button level" : 
+                                                                "Measure at narrowest point"}
                                                         />
                                                     </label>
                                                     <input 
                                                         type="number"
                                                         className="input-field"
-                                                        value={data.hip || ''}
+                                                        value={data.waist || ''}
                                                         onChange={e => {
-                                                            const hip = e.target.value;
+                                                            const waist = e.target.value;
                                                             setData({
                                                                 ...data, 
-                                                                hip,
+                                                                waist,
                                                                 bodyFat: calculateNavyBodyFat({
                                                                     ...data,
-                                                                    hip
+                                                                    waist
                                                                 })
                                                             });
                                                         }}
                                                         placeholder="inches"
                                                     />
                                                 </div>
-                                            )}
-                                            <div className="estimated-bf">
-                                                Estimated Body Fat: {data.bodyFat || 0}%
-                                                <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
-                                                    {data.gender === 'male' ? (
-                                                        `Optimal range for men: 12-18%`
-                                                    ) : (
-                                                        `Optimal range for women: 18-24%`
-                                                    )}
+                                                <div className="measurement-input">
+                                                    <label>
+                                                        Neck
+                                                        <span 
+                                                            className="measurement-tooltip" 
+                                                            data-tip="Measure below Adam's apple"
+                                                        />
+                                                    </label>
+                                                    <input 
+                                                        type="number"
+                                                        className="input-field"
+                                                        value={data.neck || ''}
+                                                        onChange={e => {
+                                                            const neck = e.target.value;
+                                                            setData({
+                                                                ...data, 
+                                                                neck,
+                                                                bodyFat: calculateNavyBodyFat({
+                                                                    ...data,
+                                                                    neck
+                                                                })
+                                                            });
+                                                        }}
+                                                        placeholder="inches"
+                                                    />
                                                 </div>
+                                                {data.gender === 'female' && (
+                                                    <div className="measurement-input">
+                                                        <label>
+                                                            Hip
+                                                            <span 
+                                                                className="measurement-tooltip" 
+                                                                data-tip="Measure at widest point"
+                                                            />
+                                                        </label>
+                                                        <input 
+                                                            type="number"
+                                                            className="input-field"
+                                                            value={data.hip || ''}
+                                                            onChange={e => {
+                                                                const hip = e.target.value;
+                                                                setData({
+                                                                    ...data, 
+                                                                    hip,
+                                                                    bodyFat: calculateNavyBodyFat({
+                                                                        ...data,
+                                                                        hip
+                                                                    })
+                                                                });
+                                                            }}
+                                                            placeholder="inches"
+                                                        />
+                                                    </div>
+                                                )}
                                             </div>
+                                            {data.bodyFat && (
+                                                <div className="estimated-bf">
+                                                    Estimated Body Fat: {data.bodyFat}%
+                                                    <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
+                                                        {data.gender === 'male' ? (
+                                                            `Optimal range for men: 12-18%`
+                                                        ) : (
+                                                            `Optimal range for women: 18-24%`
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
