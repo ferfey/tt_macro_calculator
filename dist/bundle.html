@@ -397,6 +397,51 @@ label {
 .gender-toggle:hover .gender-toggle-label:not(.active) {
     color: #34495e;
 }
+
+.segmented-control {
+    position: relative;
+    display: inline-flex;
+    background: #e2e8f0;
+    border-radius: 8px;
+    padding: 2px;
+    gap: 2px;
+    margin-top: 8px;
+}
+
+.segmented-control input[type="radio"] {
+    display: none;
+}
+
+.segmented-control label {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    font-weight: 500;
+    color: #64748b;
+    min-width: 80px;
+}
+
+.segmented-control input[type="radio"]:checked + label {
+    background: white;
+    color: #2c3e50;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Update measurements group for better alignment */
+.basic-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.basic-info-row .number-input-group {
+    flex: 1;
+}
 </style>
 
 <!-- React Component -->
@@ -646,24 +691,29 @@ const Calculator = () => {
                         <div style={accordionStyles.content}>
                             <div className="form-group" style={{marginBottom: '15px'}}>
                                 <label>Gender</label>
-                                <button 
-                                    type="button"
-                                    className={`gender-toggle ${data.gender === 'female' ? 'female' : ''}`}
-                                    onClick={() => setData({...data, gender: data.gender === 'male' ? 'female' : 'male'})}
-                                >
-                                    <div className="gender-toggle-slider" />
-                                    <div className="gender-toggle-labels">
-                                        <span className={`gender-toggle-label ${data.gender === 'male' ? 'active' : ''}`}>
-                                            Male
-                                        </span>
-                                        <span className={`gender-toggle-label ${data.gender === 'female' ? 'active' : ''}`}>
-                                            Female
-                                        </span>
-                                    </div>
-                                </button>
+                                <div className="segmented-control">
+                                    <input 
+                                        type="radio" 
+                                        id="male" 
+                                        name="gender" 
+                                        value="male"
+                                        checked={data.gender === 'male'}
+                                        onChange={e => setData({...data, gender: e.target.value})}
+                                    />
+                                    <label htmlFor="male">Male</label>
+                                    <input 
+                                        type="radio" 
+                                        id="female" 
+                                        name="gender" 
+                                        value="female"
+                                        checked={data.gender === 'female'}
+                                        onChange={e => setData({...data, gender: e.target.value})}
+                                    />
+                                    <label htmlFor="female">Female</label>
+                                </div>
                             </div>
 
-                            <div className="measurements-group" style={{gap: '30px'}}>
+                            <div className="basic-info-row">
                                 <div className="form-group number-input-group">
                                     <label>Weight (lbs)</label>
                                     <input 
