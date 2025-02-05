@@ -151,6 +151,9 @@
 }
 
 .macro-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 4px 8px;
     font-size: 13px;
 }
@@ -523,6 +526,44 @@ label {
 .energy-label {
     display: flex;
     align-items: center;
+}
+
+.info-label {
+    border-bottom: 1px dotted #718096;
+    cursor: help;
+    display: inline-block;
+}
+
+.help-icon {
+    color: #718096;
+    font-size: 14px;
+    margin-left: 4px;
+    opacity: 0.6;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: #2c3e50;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.target-divider {
+    border-top: 1px solid #e2e8f0;
+    margin: 8px 0;
 }
 </style>
 
@@ -1088,38 +1129,20 @@ const Calculator = () => {
                         <h4 style={{margin: '0 0 10px 0'}}>Energy Breakdown</h4>
                         <div className="macro-results">
                             <div className="macro-result">
-                                <span className="energy-label">
+                                <span className="info-label" title="Basal Metabolic Rate: The calories your body burns at complete rest">
                                     BMR
-                                    <span 
-                                        className="info-icon" 
-                                        title="Base Metabolic Rate: The calories your body burns at complete rest"
-                                    >
-                                        i
-                                    </span>
                                 </span>
                                 <span>{(results.energyData && results.energyData.bmr) || 0} cal</span>
                             </div>
                             <div className="macro-result">
-                                <span className="energy-label">
+                                <span className="info-label" title="Additional calories burned from daily activities (excluding workouts)">
                                     Activity
-                                    <span 
-                                        className="info-icon" 
-                                        title="Additional calories burned from daily activities (excluding workouts)"
-                                    >
-                                        i
-                                    </span>
                                 </span>
                                 <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
                             </div>
                             <div className="macro-result" style={{fontWeight: 'bold'}}>
-                                <span className="energy-label">
+                                <span className="info-label" title="Total Daily Energy Expenditure: Your total daily calorie burn">
                                     TDEE
-                                    <span 
-                                        className="info-icon" 
-                                        title="Total Daily Energy Expenditure: Your total daily calorie burn"
-                                    >
-                                        i
-                                    </span>
                                 </span>
                                 <span>{(results.energyData && results.energyData.tdee) || 0} cal</span>
                             </div>
@@ -1127,28 +1150,15 @@ const Calculator = () => {
                                 color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
                                        results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
                             }}>
-                                <span className="energy-label">
+                                <span className="info-label" title="Calorie adjustment based on your selected goal">
                                     Adjustment
-                                    <span 
-                                        className="info-icon" 
-                                        title="Calorie adjustment based on your selected goal"
-                                    >
-                                        i
-                                    </span>
                                 </span>
                                 <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
                                        ((results.energyData && results.energyData.calorieAdjustment) || 0)}%</span>
                             </div>
+                            <div className="target-divider" />
                             <div className="macro-result" style={{fontWeight: 'bold', fontSize: '16px'}}>
-                                <span className="energy-label">
-                                    Target
-                                    <span 
-                                        className="info-icon" 
-                                        title="Your daily calorie target based on TDEE and goal adjustment"
-                                    >
-                                        i
-                                    </span>
-                                </span>
+                                <span>Target Daily Calories</span>
                                 <span>{results.calories} cal</span>
                             </div>
                         </div>
