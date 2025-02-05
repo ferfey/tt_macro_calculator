@@ -5,6 +5,8 @@
 <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<!-- PDF Generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <!-- Styles -->
 <style>
@@ -894,53 +896,65 @@ label {
 
 /* Print styles */
 @media print {
-    #macro-calculator {
-        background: white;
-        padding: 0;
+    /* Hide Squarespace elements */
+    header,
+    .header,
+    .header-nav-wrapper,
+    .header-nav,
+    .site-navigation,
+    .Header,
+    .Header-nav,
+    .Header-nav-inner,
+    .Header-nav-list,
+    .Navigation,
+    .Footer,
+    .footer,
+    .site-footer,
+    #header,
+    #footer,
+    #siteNav,
+    .sqs-announcement-bar,
+    .mobile-nav-toggle,
+    .mobile-nav,
+    #topNav {
+        display: none !important;
     }
-    
+
+    /* Force body/content to full width */
+    body,
+    .Site,
+    .Main,
+    .Content-outer,
+    .sqs-layout {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    /* Ensure our calculator takes up the full page */
+    #macro-calculator {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        background: white !important;
+    }
+
+    /* Optimize summary section for printing */
+    .summary-section {
+        page-break-inside: avoid;
+        margin: 0;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     /* Hide calculator interface */
     .calculator-card > form,
     .results,
     .methodology-section {
         display: none !important;
-    }
-    
-    /* Show only the summary section */
-    .summary-section {
-        box-shadow: none;
-        break-inside: avoid;
-        margin: 0;
-        padding: 0;
-    }
-    
-    /* Hide the print button in the summary */
-    .print-button {
-        display: none;
-    }
-    
-    /* Optimize summary layout for printing */
-    .summary-content {
-        font-size: 12pt;
-    }
-    
-    /* Ensure good contrast for printing */
-    .transform-services {
-        border-top: 1px solid #000;
-    }
-    
-    /* Hide Squarespace navigation and header elements */
-    .header-nav-wrapper,
-    .header-nav,
-    .header-menu,
-    .site-navigation {
-        display: none !important;
-    }
-    
-    /* Ensure our content starts at the top of the page */
-    #macro-calculator {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
     }
 }
 </style>
@@ -1196,6 +1210,80 @@ const Calculator = () => {
                 return value > 0 && value < 120 ? '' : 'Please enter a valid height';
             // ... other validations
         }
+    };
+
+    // Add this function inside the Calculator component
+    const generatePDF = () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Set font styles
+        doc.setFont('helvetica');
+        
+        // Add Transform Training logo/header
+        doc.setFontSize(24);
+        doc.setTextColor(44, 62, 80); // #2c3e50
+        doc.text('Transform Training', 20, 20);
+        
+        // Add title
+        doc.setFontSize(18);
+        doc.text('Personalized Nutrition Plan', 20, 35);
+        
+        // Add client profile
+        doc.setFontSize(12);
+        doc.setTextColor(74, 85, 104); // #4a5568
+        doc.text('Client Profile:', 20, 50);
+        doc.text(`Height: ${data.height} inches`, 30, 60);
+        doc.text(`Weight: ${data.weight} lbs`, 30, 67);
+        doc.text(`Body Fat: ${data.bodyFat}%`, 30, 74);
+        doc.text(`Lean Body Mass: ${Math.round(leanMass)} lbs`, 30, 81);
+        doc.text(`Activity Level: ${data.activity}`, 30, 88);
+        doc.text(`Goal: ${data.goal === 'lose' ? 'Lose Body Fat' :
+                         data.goal === 'maintain' ? 'Maintain Body Composition' :
+                         data.goal === 'gain' ? 'Build Lean Muscle' : ''}`, 30, 95);
+
+        // Add daily targets
+        doc.setFontSize(14);
+        doc.setTextColor(44, 62, 80);
+        doc.text('Daily Nutrition Targets', 20, 110);
+        
+        doc.setFontSize(12);
+        doc.setTextColor(74, 85, 104);
+        doc.text(`Calories: ${results.calories} kcal`, 30, 120);
+        doc.text(`Protein: ${results.protein}g (${Math.round(results.protein/leanMass * 10) / 10}g/lb LBM)`, 30, 127);
+        doc.text(`Carbs: ${results.carbs}g`, 30, 134);
+        doc.text(`Fat: ${results.fat}g`, 30, 141);
+
+        // Add Transform Training services
+        doc.setFontSize(14);
+        doc.setTextColor(44, 62, 80);
+        doc.text('Next Steps with Transform Training', 20, 160);
+        
+        doc.setFontSize(12);
+        doc.setTextColor(74, 85, 104);
+        doc.text('Our services include:', 20, 170);
+        const services = [
+            'Personalized nutrition coaching',
+            'Custom meal planning',
+            'Progress tracking and adjustments',
+            '1-on-1 training programs',
+            'Ongoing support and accountability'
+        ];
+        services.forEach((service, index) => {
+            doc.text(`• ${service}`, 25, 180 + (index * 7));
+        });
+
+        // Add contact information
+        doc.setFontSize(12);
+        doc.setTextColor(44, 62, 80);
+        doc.text('Contact us to get started:', 20, 220);
+        doc.setTextColor(74, 85, 104);
+        doc.text('Email: info@transformtraining.com', 25, 230);
+        doc.text('Phone: (555) 123-4567', 25, 237);
+        doc.text('Website: www.transformtraining.com', 25, 244);
+
+        // Save the PDF
+        doc.save('transform-training-nutrition-plan.pdf');
     };
 
     // Component render
@@ -1742,9 +1830,9 @@ const Calculator = () => {
                             <h4 style={{margin: 0}}>Your Personalized Nutrition Plan</h4>
                             <button 
                                 className="print-button"
-                                onClick={() => window.print()}
+                                onClick={generatePDF}
                             >
-                                Print Summary 🖨️
+                                Download PDF 📄
                             </button>
                         </div>
                         <div className="summary-content">
