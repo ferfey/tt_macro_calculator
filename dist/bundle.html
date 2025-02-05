@@ -1404,19 +1404,19 @@ const Calculator = () => {
                         <h4 style={{margin: '0 0 10px 0'}}>Energy Breakdown</h4>
                         <div className="macro-results">
                             <div className="macro-result">
-                                <span className="info-label" title="Basal Metabolic Rate: The calories your body burns at complete rest">
+                                <span className="tooltip" title="Basal Metabolic Rate: The calories your body burns at complete rest">
                                     BMR
                                 </span>
                                 <span>{(results.energyData && results.energyData.bmr) || 0} cal</span>
                             </div>
                             <div className="macro-result">
-                                <span className="info-label" title="Additional calories burned from daily activities (excluding workouts)">
+                                <span className="tooltip" title="Additional calories burned from daily activities (excluding workouts)">
                                     Activity
                                 </span>
                                 <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
                             </div>
                             <div className="macro-result">
-                                <span className="info-label" title="Total Daily Energy Expenditure: Your total daily calorie burn">
+                                <span className="tooltip" title="Total Daily Energy Expenditure: Your total daily calorie burn">
                                     TDEE
                                 </span>
                                 <span>{(results.energyData && results.energyData.tdee) || 0} cal</span>
@@ -1425,7 +1425,7 @@ const Calculator = () => {
                                 color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
                                        results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
                             }}>
-                                <span className="info-label" title="Calorie adjustment based on your selected goal">
+                                <span className="tooltip" title="Calorie adjustment based on your selected goal">
                                     Adjustment
                                 </span>
                                 <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
@@ -1513,12 +1513,19 @@ const Calculator = () => {
                         {showCustomize && (
                             <div className="customize-panel">
                                 <div className="slider-container">
-                                    <label>Calorie Adjustment</label>
-                                    <div className="slider-value" style={{
-                                        color: Math.abs(calorieAdjustment) <= 10 ? '#2f855a' :
-                                               Math.abs(calorieAdjustment) <= 20 ? '#ecc94b' : '#e53e3e'
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        marginBottom: '10px'
                                     }}>
-                                        {calorieAdjustment > 0 ? '+' : ''}{calorieAdjustment}%
+                                        <label>Goal Adjustment</label>
+                                        <span style={{
+                                            color: Math.abs(calorieAdjustment) <= 10 ? '#2f855a' :
+                                                   Math.abs(calorieAdjustment) <= 20 ? '#ecc94b' : '#e53e3e'
+                                        }}>
+                                            {calorieAdjustment > 0 ? '+' : ''}{calorieAdjustment}%
+                                        </span>
                                     </div>
                                     <input
                                         type="range"
@@ -1540,8 +1547,8 @@ const Calculator = () => {
                                     {Math.abs(calorieAdjustment) >= 30 && (
                                         <div className="warning-text">
                                             {calorieAdjustment < 0 
-                                                ? "Warning: This is a very aggressive caloric deficit"
-                                                : "Warning: This is a very aggressive caloric surplus"}
+                                                ? "Warning: This is a very aggressive deficit"
+                                                : "Warning: This is a very aggressive surplus"}
                                         </div>
                                     )}
                                 </div>
