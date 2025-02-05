@@ -957,6 +957,55 @@ label {
         display: none !important;
     }
 }
+
+/* Add styles for email form */
+.email-form {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.email-input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.email-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.email-button {
+    background: #2c3e50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.email-button:hover {
+    background: #34495e;
+}
+
+.email-status {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.email-status.success {
+    color: #2f855a;
+}
+
+.email-status.error {
+    color: #e53e3e;
+}
 </style>
 
 <!-- React Component -->
@@ -991,6 +1040,9 @@ const Calculator = () => {
     const [isCalculating, setIsCalculating] = React.useState(false);
     const [validationErrors, setValidationErrors] = React.useState({});
     const [showMethodology, setShowMethodology] = React.useState(false);
+    const [email, setEmail] = React.useState('');
+    const [emailStatus, setEmailStatus] = React.useState('');
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
 
     // Add measurement instructions
     const measurementInstructions = {
@@ -1284,6 +1336,54 @@ const Calculator = () => {
 
         // Save the PDF
         doc.save('transform-training-nutrition-plan.pdf');
+    };
+
+    // Add email submission function
+    const handleEmailSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setEmailStatus('');
+
+        try {
+            const response = await fetch('YOUR_SQUARESPACE_FORM_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'form-name': 'YOUR_FORM_NAME',
+                    'email': email,
+                    'firstName': '', // If you want to collect name
+                    'calculatorResults': JSON.stringify({
+                        profile: {
+                            height: data.height,
+                            weight: data.weight,
+                            bodyFat: data.bodyFat,
+                            leanMass: Math.round(leanMass),
+                            activity: data.activity,
+                            goal: data.goal
+                        },
+                        targets: {
+                            calories: results.calories,
+                            protein: results.protein,
+                            carbs: results.carbs,
+                            fat: results.fat
+                        }
+                    })
+                })
+            });
+
+            if (response.ok) {
+                setEmailStatus('success');
+                setEmail('');
+            } else {
+                throw new Error('Failed to subscribe');
+            }
+        } catch (error) {
+            setEmailStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     // Component render
@@ -1872,6 +1972,39 @@ const Calculator = () => {
                                     <strong>Phone:</strong> (555) 123-4567<br/>
                                     <strong>Website:</strong> www.transformtraining.com
                                 </p>
+                            </div>
+
+                            {/* Email form */}
+                            <div className="email-form">
+                                <h5>Get Your Results by Email</h5>
+                                <p>We'll send you your personalized plan and keep you updated with nutrition tips and exclusive offers.</p>
+                                <form onSubmit={handleEmailSubmit} className="email-input-group">
+                                    <input
+                                        type="email"
+                                        className="email-input"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        placeholder="Enter your email"
+                                        required
+                                    />
+                                    <button 
+                                        type="submit" 
+                                        className="email-button"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? 'Sending...' : 'Send Results'}
+                                    </button>
+                                </form>
+                                {emailStatus === 'success' && (
+                                    <div className="email-status success">
+                                        Great! Check your email for your personalized plan.
+                                    </div>
+                                )}
+                                {emailStatus === 'error' && (
+                                    <div className="email-status error">
+                                        Sorry, there was an error. Please try again.
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
