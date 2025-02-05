@@ -604,6 +604,48 @@ label {
     border-top: 2px solid #e2e8f0;
     margin: 8px 0;
 }
+
+.edit-icon {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #718096;
+    cursor: pointer;
+    padding: 2px 6px;
+    margin-left: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.edit-icon:hover {
+    opacity: 1;
+}
+
+.customize-panel {
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 4px;
+    border-left: 3px solid #2c3e50;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.toggle-customize {
+    font-size: 13px;
+    color: #718096;
+}
+
+.macro-label {
+    display: flex;
+    align-items: center;
+}
 </style>
 
 <!-- React Component -->
@@ -1205,23 +1247,42 @@ const Calculator = () => {
 
                     {/* Macronutrient Section */}
                     <div className="results-section">
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: '10px'
-                        }}>
-                            <h4 style={{margin: 0}}>Macronutrient Targets</h4>
-                            <button 
-                                className="customize-button"
-                                onClick={() => setShowCustomize(!showCustomize)}
-                            >
-                                {showCustomize ? 'Hide' : 'Customize'}
-                            </button>
+                        <h4 style={{margin: '0 0 10px 0'}}>Macronutrient Targets</h4>
+                        <div className="macro-results">
+                            <div className="macro-result">
+                                <span className="macro-label">
+                                    Protein
+                                    <button 
+                                        className="edit-icon"
+                                        onClick={() => setShowCustomize(!showCustomize)}
+                                        title="Customize protein ratio"
+                                    >
+                                        ✎
+                                    </button>
+                                </span>
+                                <span>{results.protein}g ({Math.round(results.protein/leanMass * 10) / 10} g/lb LBM)</span>
+                            </div>
+                            <div className="macro-result">
+                                <span className="macro-label">
+                                    Carbs
+                                    <button 
+                                        className="edit-icon"
+                                        onClick={() => setShowCustomize(!showCustomize)}
+                                        title="Customize carb intake"
+                                    >
+                                        ✎
+                                    </button>
+                                </span>
+                                <span>{results.carbs}g</span>
+                            </div>
+                            <div className="macro-result">
+                                <span>Fat</span>
+                                <span>{results.fat}g</span>
+                            </div>
                         </div>
-
+                        
                         {showCustomize && (
-                            <div className="customize-section">
+                            <div className="customize-panel">
                                 <div className="customize-grid">
                                     <div className="macro-customize">
                                         <label>Protein Modifier (g/lb LBM)</label>
@@ -1302,21 +1363,6 @@ const Calculator = () => {
                                 </div>
                             </div>
                         )}
-
-                        <div className="macro-results">
-                            <div className="macro-result">
-                                <span>Protein:</span>
-                                <span>{results.protein}g ({Math.round(results.protein/leanMass * 10) / 10} g/lb LBM)</span>
-                            </div>
-                            <div className="macro-result">
-                                <span>Carbs:</span>
-                                <span>{results.carbs}g</span>
-                            </div>
-                            <div className="macro-result">
-                                <span>Fat:</span>
-                                <span>{results.fat}g</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             )}
