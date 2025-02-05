@@ -26,6 +26,7 @@
 
 .form-group {
     margin-bottom: 12px;
+    position: relative;
 }
 
 .gender-group {
@@ -172,11 +173,17 @@ label {
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
-    .activity-description {
-        position: static;
-        transform: none;
-        margin-top: 10px;
-        width: auto;
+    #macro-calculator {
+        max-width: 100%;
+        padding: 10px;
+    }
+    
+    .calculator-card {
+        padding: 15px;
+    }
+    .results {
+        grid-template-columns: 1fr;  /* Stack on mobile */
+        gap: 15px;
     }
 }
 
@@ -666,6 +673,24 @@ label {
     color: #4a5568;
     font-size: 13px;
 }
+
+.floating-label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.2s;
+    pointer-events: none;
+    color: #718096;
+}
+
+.input-field:focus + .floating-label,
+.input-field:not(:placeholder-shown) + .floating-label {
+    top: 0;
+    transform: translateY(-100%) scale(0.85);
+    background: white;
+    padding: 0 4px;
+}
 </style>
 
 <!-- React Component -->
@@ -698,6 +723,8 @@ const Calculator = () => {
         bodyComp: false,
         activity: false
     });
+    const [isCalculating, setIsCalculating] = React.useState(false);
+    const [validationErrors, setValidationErrors] = React.useState({});
 
     // Add measurement instructions
     const measurementInstructions = {
@@ -739,8 +766,11 @@ const Calculator = () => {
     };
 
     // Calculate function - handles all the macro calculations
-    const calculate = (e) => {
+    const calculate = async (e) => {
         e.preventDefault();
+        setIsCalculating(true);
+        // Add small delay to show loading state
+        await new Promise(resolve => setTimeout(resolve, 500));
         // Collapse all sections
         setOpenSections({
             basics: false,
@@ -793,6 +823,7 @@ const Calculator = () => {
         console.log('Calculate function - TDEE:', tdee);
         console.log('Calculate function - Energy Data:', energyData);
         updateMacros(targetCalories, calculatedLeanMass, energyData);
+        setIsCalculating(false);
     };
     // Updates macro calculations based on user customizations
     const updateMacros = (calories, currentLeanMass = leanMass, energyData = null) => {
@@ -904,6 +935,17 @@ const Calculator = () => {
         );
     };
 
+    // Add validation function
+    const validateField = (name, value) => {
+        switch(name) {
+            case 'weight':
+                return value > 0 && value < 1000 ? '' : 'Please enter a valid weight';
+            case 'height':
+                return value > 0 && value < 120 ? '' : 'Please enter a valid height';
+            // ... other validations
+        }
+    };
+
     // Component render
     return (
         <div className="calculator-card">
@@ -948,20 +990,36 @@ const Calculator = () => {
                                     <label>Weight (lbs)</label>
                                     <input 
                                         type="number"
-                                        className="input-field"
+                                        className={`input-field ${validationErrors.weight ? 'error' : ''}`}
                                         value={data.weight}
-                                        onChange={e => setData({...data, weight: e.target.value})}
+                                        onChange={e => {
+                                            const value = e.target.value;
+                                            const error = validateField('weight', value);
+                                            setValidationErrors({...validationErrors, weight: error});
+                                            setData({...data, weight: value});
+                                        }}
                                     />
+                                    {validationErrors.weight && (
+                                        <div className="error-message">{validationErrors.weight}</div>
+                                    )}
                                 </div>
 
                                 <div className="form-group number-input-group">
                                     <label>Height (inches)</label>
                                     <input 
                                         type="number"
-                                        className="input-field"
+                                        className={`input-field ${validationErrors.height ? 'error' : ''}`}
                                         value={data.height}
-                                        onChange={e => setData({...data, height: e.target.value})}
+                                        onChange={e => {
+                                            const value = e.target.value;
+                                            const error = validateField('height', value);
+                                            setValidationErrors({...validationErrors, height: error});
+                                            setData({...data, height: value});
+                                        }}
                                     />
+                                    {validationErrors.height && (
+                                        <div className="error-message">{validationErrors.height}</div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -1212,14 +1270,13 @@ const Calculator = () => {
                 <button 
                     type="submit" 
                     className={`button ${!isFormValid() ? 'button-disabled' : ''}`}
-                    disabled={!isFormValid()}
-                    style={{
-                        marginTop: '20px',
-                        opacity: isFormValid() ? 1 : 0.5,
-                        cursor: isFormValid() ? 'pointer' : 'not-allowed'
-                    }}
+                    disabled={!isFormValid() || isCalculating}
                 >
-                    {!isFormValid() ? 'Please Fill All Required Fields' : 'Calculate Macros'}
+                    {isCalculating ? (
+                        <span className="loading-spinner">Calculating...</span>
+                    ) : (
+                        !isFormValid() ? 'Please Fill All Required Fields' : 'Calculate Macros'
+                    )}
                 </button>
             </form>
             {/* Results Section */}
