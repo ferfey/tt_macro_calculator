@@ -1270,8 +1270,8 @@ const Calculator = () => {
                         <h4 style={{margin: '0 0 10px 0'}}>Macronutrient Targets</h4>
                         <div className="macro-results">
                             <div className="macro-result">
-                                <span className="macro-label">
-                                    Protein <span className="macro-label-with-ratio">(1g/lb LBM)</span>
+                                <span>
+                                    Protein ({Math.round(results.protein/leanMass * 10) / 10}g/lb LBM)
                                 </span>
                                 <span className="macro-value">
                                     {showCustomize ? (
@@ -1289,8 +1289,9 @@ const Calculator = () => {
                                             step="0.1"
                                         />
                                     ) : (
-                                        `${results.protein}g`
+                                        results.protein
                                     )}
+                                    g
                                     <button 
                                         className="edit-icon"
                                         onClick={() => setShowCustomize(!showCustomize)}
@@ -1317,8 +1318,9 @@ const Calculator = () => {
                                             min="0"
                                         />
                                     ) : (
-                                        `${results.carbs}g`
+                                        results.carbs
                                     )}
+                                    g
                                     <button 
                                         className="edit-icon"
                                         onClick={() => setShowCustomize(!showCustomize)}
