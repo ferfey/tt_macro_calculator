@@ -691,6 +691,49 @@ label {
     background: white;
     padding: 0 4px;
 }
+
+.gender-select {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.gender-option {
+    flex: 1;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #4a5568;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.gender-option.selected {
+    background: #2c3e50;
+    color: white;
+    border-color: #2c3e50;
+}
+
+.gender-option:hover:not(.selected) {
+    border-color: #2c3e50;
+    background: #f8fafc;
+}
+
+/* Update body composition styles */
+.body-comp-inputs {
+    max-width: 100%;
+}
+
+.body-comp-inputs .input-field {
+    max-width: 100%;
+}
+
+.body-comp-inputs .form-group {
+    margin-bottom: 15px;
+}
 </style>
 
 <!-- React Component -->
@@ -969,25 +1012,21 @@ const Calculator = () => {
                                 <div>
                                     <div className="form-group" style={{marginBottom: '15px'}}>
                                         <label>Gender</label>
-                                        <div className="segmented-control">
-                                            <input 
-                                                type="radio" 
-                                                id="male" 
-                                                name="gender" 
-                                                value="male"
-                                                checked={data.gender === 'male'}
-                                                onChange={e => setData({...data, gender: e.target.value})}
-                                            />
-                                            <label htmlFor="male">Male</label>
-                                            <input 
-                                                type="radio" 
-                                                id="female" 
-                                                name="gender" 
-                                                value="female"
-                                                checked={data.gender === 'female'}
-                                                onChange={e => setData({...data, gender: e.target.value})}
-                                            />
-                                            <label htmlFor="female">Female</label>
+                                        <div className="gender-select">
+                                            <button
+                                                type="button"
+                                                className={`gender-option ${data.gender === 'male' ? 'selected' : ''}`}
+                                                onClick={() => setData({...data, gender: 'male'})}
+                                            >
+                                                Male
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={`gender-option ${data.gender === 'female' ? 'selected' : ''}`}
+                                                onClick={() => setData({...data, gender: 'female'})}
+                                            >
+                                                Female
+                                            </button>
                                         </div>
                                     </div>
 
@@ -1029,7 +1068,7 @@ const Calculator = () => {
                                 </div>
 
                                 {/* Right Column - Body Composition */}
-                                <div>
+                                <div className="body-comp-inputs">
                                     <div className="form-group">
                                         <label>Body Fat Estimation Method</label>
                                         <select 
