@@ -267,12 +267,16 @@ label {
     gap: 15px;
     align-items: flex-start;
     margin-top: 10px;
-    width: calc(100% - 15px);  /* Subtract padding from width */
+    width: 95%;  /* Match parent width */
 }
 
 .measurement-input {
     flex: 1;
     margin: 0;
+}
+
+.measurement-input .input-field {
+    width: 100%;  /* Take full width of parent */
 }
 
 .measurement-tooltip {
@@ -754,19 +758,35 @@ label {
 
 /* Update body composition styles */
 .body-comp-inputs {
-    max-width: calc(100% - 15px);  /* Subtract padding from max-width */
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.body-comp-inputs .input-field {
-    max-width: 100%;
-    width: 100%;
+    width: 95%;  /* Use percentage instead of calc */
     box-sizing: border-box;
 }
 
 .body-comp-inputs .form-group {
     margin-bottom: 15px;
+}
+
+.body-comp-inputs .input-field {
+    width: 95%;  /* Match parent width */
+    box-sizing: border-box;
+}
+
+/* Update navy measurements */
+.navy-measurements {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-top: 10px;
+    width: 95%;  /* Match parent width */
+}
+
+.measurement-input {
+    flex: 1;
+    margin: 0;
+}
+
+.measurement-input .input-field {
+    width: 100%;  /* Take full width of parent */
 }
 </style>
 
