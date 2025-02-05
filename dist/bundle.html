@@ -892,14 +892,41 @@ label {
     background: #34495e;
 }
 
+/* Print styles */
 @media print {
     #macro-calculator {
         background: white;
+        padding: 0;
     }
     
+    /* Hide calculator interface */
+    .calculator-card > form,
+    .results,
+    .methodology-section {
+        display: none !important;
+    }
+    
+    /* Show only the summary section */
     .summary-section {
         box-shadow: none;
         break-inside: avoid;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Hide the print button in the summary */
+    .print-button {
+        display: none;
+    }
+    
+    /* Optimize summary layout for printing */
+    .summary-content {
+        font-size: 12pt;
+    }
+    
+    /* Ensure good contrast for printing */
+    .transform-services {
+        border-top: 1px solid #000;
     }
 }
 </style>
@@ -1458,9 +1485,9 @@ const Calculator = () => {
                                     onChange={e => setData({...data, goal: e.target.value})}
                                 >
                                     <option value="">Select Goal</option>
-                                    <option value="lose">Lose Fat</option>
-                                    <option value="maintain">Maintain</option>
-                                    <option value="gain">Gain Muscle</option>
+                                    <option value="lose">Lose Body Fat</option>
+                                    <option value="maintain">Maintain Body Composition</option>
+                                    <option value="gain">Build Lean Muscle</option>
                                 </select>
                             </div>
 
@@ -1714,7 +1741,9 @@ const Calculator = () => {
                                 <li>Body Fat: {data.bodyFat}%</li>
                                 <li>Lean Body Mass: {Math.round(leanMass)} lbs</li>
                                 <li>Activity Level: {data.activity}</li>
-                                <li>Goal: {data.goal}</li>
+                                <li>Goal: {data.goal === 'lose' ? 'Lose Body Fat' :
+                                          data.goal === 'maintain' ? 'Maintain Body Composition' :
+                                          data.goal === 'gain' ? 'Build Lean Muscle' : ''}</li>
                             </ul>
                             
                             <div className="summary-stats">
