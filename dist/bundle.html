@@ -537,6 +537,7 @@ label {
     align-items: center;
     color: #4a5568;
     position: relative;
+    cursor: help;
 }
 
 .info-label::after {
@@ -1178,7 +1179,7 @@ const Calculator = () => {
                                 </span>
                                 <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
                             </div>
-                            <div className="macro-result" style={{fontWeight: 'bold'}}>
+                            <div className="macro-result">
                                 <span className="info-label" title="Total Daily Energy Expenditure: Your total daily calorie burn">
                                     TDEE
                                 </span>
@@ -1196,8 +1197,8 @@ const Calculator = () => {
                             </div>
                             <div className="target-divider" />
                             <div className="macro-result" style={{fontWeight: 'bold', fontSize: '16px'}}>
-                                <span>Target Daily Calories</span>
-                                <span>{results.calories} cal</span>
+                                <span>Daily Calories</span>
+                                <span>{results.calories}</span>
                             </div>
                         </div>
                     </div>
