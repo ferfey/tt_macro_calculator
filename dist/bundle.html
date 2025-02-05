@@ -729,6 +729,8 @@ label {
 
 .body-comp-inputs .input-field {
     max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .body-comp-inputs .form-group {
@@ -748,7 +750,7 @@ const Calculator = () => {
         bodyFat: '',
         activity: '',
         goal: '',
-        bodyFatMethod: 'direct'
+        bodyFatMethod: 'dexa'
     });
     const [results, setResults] = React.useState(null);
     const [showCustomize, setShowCustomize] = React.useState(false);
@@ -1073,16 +1075,16 @@ const Calculator = () => {
                                         <label>Body Fat Estimation Method</label>
                                         <select 
                                             className="input-field"
-                                            value={data.bodyFatMethod || 'direct'}
+                                            value={data.bodyFatMethod || 'dexa'}
                                             onChange={e => setData({...data, bodyFatMethod: e.target.value})}
                                         >
-                                            <option value="direct">Direct Input</option>
+                                            <option value="dexa">DEXA / Caliper / BodPod</option>
                                             <option value="navy">Navy Method</option>
                                         </select>
                                     </div>
 
                                     {/* Body fat input methods */}
-                                    {data.bodyFatMethod === 'direct' ? (
+                                    {data.bodyFatMethod === 'dexa' ? (
                                         <div className="form-group">
                                             <label>Body Fat Percentage</label>
                                             <input 
