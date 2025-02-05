@@ -1148,7 +1148,7 @@ const Calculator = () => {
         
         const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
         const carbs = parseInt(customCarbs);
-        const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
+        const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9);
 
         const newResults = {
             calories: Math.round(adjustedCalories),
@@ -1345,37 +1345,26 @@ const Calculator = () => {
         setEmailStatus('');
 
         try {
-            const response = await fetch('YOUR_SQUARESPACE_FORM_ENDPOINT', {
+            // Subscribe to Squarespace Email Campaigns
+            const response = await fetch('/api/email-campaigns/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: new URLSearchParams({
-                    'form-name': 'YOUR_FORM_NAME',
+                    'listId': 'YOUR_LIST_ID', // Get this from Squarespace
                     'email': email,
-                    'firstName': '', // If you want to collect name
-                    'calculatorResults': JSON.stringify({
-                        profile: {
-                            height: data.height,
-                            weight: data.weight,
-                            bodyFat: data.bodyFat,
-                            leanMass: Math.round(leanMass),
-                            activity: data.activity,
-                            goal: data.goal
-                        },
-                        targets: {
-                            calories: results.calories,
-                            protein: results.protein,
-                            carbs: results.carbs,
-                            fat: results.fat
-                        }
-                    })
+                    'firstName': '',  // Optional
+                    'lastName': '',   // Optional
+                    'source': 'Macro Calculator'
                 })
             });
 
             if (response.ok) {
                 setEmailStatus('success');
                 setEmail('');
+                // Generate and send PDF automatically
+                generatePDF();
             } else {
                 throw new Error('Failed to subscribe');
             }
