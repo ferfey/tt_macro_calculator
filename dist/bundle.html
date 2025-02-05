@@ -719,8 +719,7 @@ const Calculator = () => {
         Each activity level has a different calorie multiplier that affects your total daily energy expenditure.
     `);
     const [openSections, setOpenSections] = React.useState({
-        basics: true,
-        bodyComp: false,
+        profile: true,
         activity: false
     });
     const [isCalculating, setIsCalculating] = React.useState(false);
@@ -773,8 +772,7 @@ const Calculator = () => {
         await new Promise(resolve => setTimeout(resolve, 500));
         // Collapse all sections
         setOpenSections({
-            basics: false,
-            bodyComp: false,
+            profile: false,
             activity: false
         });
         const weight = parseFloat(data.weight);
@@ -950,212 +948,208 @@ const Calculator = () => {
     return (
         <div className="calculator-card">
             <form onSubmit={calculate}>
-                {/* Basic Information Section */}
+                {/* Physical Profile Section */}
                 <div style={accordionStyles.section}>
                     <div 
                         style={accordionStyles.header}
-                        onClick={() => setOpenSections({...openSections, basics: !openSections.basics})}
+                        onClick={() => setOpenSections({...openSections, profile: !openSections.profile})}
                     >
-                        <h3 style={accordionStyles.title}>Basic Information</h3>
-                        <span>{openSections.basics ? '−' : '+'}</span>
+                        <h3 style={accordionStyles.title}>Physical Profile</h3>
+                        <span>{openSections.profile ? '−' : '+'}</span>
                     </div>
-                    {openSections.basics && (
+                    {openSections.profile && (
                         <div style={accordionStyles.content}>
-                            <div className="form-group" style={{marginBottom: '15px'}}>
-                                <label>Gender</label>
-                                <div className="segmented-control">
-                                    <input 
-                                        type="radio" 
-                                        id="male" 
-                                        name="gender" 
-                                        value="male"
-                                        checked={data.gender === 'male'}
-                                        onChange={e => setData({...data, gender: e.target.value})}
-                                    />
-                                    <label htmlFor="male">Male</label>
-                                    <input 
-                                        type="radio" 
-                                        id="female" 
-                                        name="gender" 
-                                        value="female"
-                                        checked={data.gender === 'female'}
-                                        onChange={e => setData({...data, gender: e.target.value})}
-                                    />
-                                    <label htmlFor="female">Female</label>
-                                </div>
-                            </div>
-
-                            <div className="basic-info-row">
-                                <div className="form-group number-input-group">
-                                    <label>Weight (lbs)</label>
-                                    <input 
-                                        type="number"
-                                        className={`input-field ${validationErrors.weight ? 'error' : ''}`}
-                                        value={data.weight}
-                                        onChange={e => {
-                                            const value = e.target.value;
-                                            const error = validateField('weight', value);
-                                            setValidationErrors({...validationErrors, weight: error});
-                                            setData({...data, weight: value});
-                                        }}
-                                    />
-                                    {validationErrors.weight && (
-                                        <div className="error-message">{validationErrors.weight}</div>
-                                    )}
-                                </div>
-
-                                <div className="form-group number-input-group">
-                                    <label>Height (inches)</label>
-                                    <input 
-                                        type="number"
-                                        className={`input-field ${validationErrors.height ? 'error' : ''}`}
-                                        value={data.height}
-                                        onChange={e => {
-                                            const value = e.target.value;
-                                            const error = validateField('height', value);
-                                            setValidationErrors({...validationErrors, height: error});
-                                            setData({...data, height: value});
-                                        }}
-                                    />
-                                    {validationErrors.height && (
-                                        <div className="error-message">{validationErrors.height}</div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Body Composition Section */}
-                <div style={accordionStyles.section}>
-                    <div 
-                        style={accordionStyles.header}
-                        onClick={() => setOpenSections({...openSections, bodyComp: !openSections.bodyComp})}
-                    >
-                        <h3 style={accordionStyles.title}>Body Composition</h3>
-                        <span>{openSections.bodyComp ? '−' : '+'}</span>
-                    </div>
-                    {openSections.bodyComp && (
-                        <div style={{
-                            ...accordionStyles.content,
-                            maxWidth: '100%',
-                            overflow: 'hidden'
-                        }}>
-                            <div style={{maxWidth: '300px'}}>
-                                <select 
-                                    className="input-field"
-                                    value={data.bodyFatMethod || 'direct'}
-                                    onChange={e => setData({...data, bodyFatMethod: e.target.value})}
-                                >
-                                    <option value="direct">Direct Input</option>
-                                    <option value="navy">Navy Method</option>
-                                </select>
-                            </div>
-                            
-                            {data.bodyFatMethod === 'direct' ? (
-                                <div style={{maxWidth: '300px', marginTop: '10px'}}>
-                                    <input 
-                                        type="number"
-                                        className="input-field"
-                                        value={data.bodyFat}
-                                        onChange={e => setData({...data, bodyFat: e.target.value})}
-                                        placeholder="Enter body fat %"
-                                    />
-                                    {data.bodyFat && (
-                                        <div className="estimated-bf" style={{marginTop: '10px'}}>
-                                            Current Body Fat: {data.bodyFat}%
-                                            <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
-                                                {data.gender === 'male' ? (
-                                                    `Optimal range for men: 12-18%`
-                                                ) : (
-                                                    `Optimal range for women: 18-24%`
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="navy-measurements">
-                                    <div className="measurement-input">
-                                        <label>Waist (inches)</label>
-                                        <input 
-                                            type="number"
-                                            className="input-field"
-                                            value={data.waist || ''}
-                                            onChange={e => {
-                                                const waist = e.target.value;
-                                                setData({
-                                                    ...data, 
-                                                    waist,
-                                                    bodyFat: calculateNavyBodyFat({
-                                                        ...data,
-                                                        waist
-                                                    })
-                                                });
-                                            }}
-                                        />
-                                        <div className="measurement-instruction">
-                                            {data.gender && measurementInstructions[data.gender].waist}
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: '40% 60%',
+                                gap: '20px',
+                                alignItems: 'start'
+                            }}>
+                                {/* Left Column - Basic Measurements */}
+                                <div>
+                                    <div className="form-group" style={{marginBottom: '15px'}}>
+                                        <label>Gender</label>
+                                        <div className="segmented-control">
+                                            <input 
+                                                type="radio" 
+                                                id="male" 
+                                                name="gender" 
+                                                value="male"
+                                                checked={data.gender === 'male'}
+                                                onChange={e => setData({...data, gender: e.target.value})}
+                                            />
+                                            <label htmlFor="male">Male</label>
+                                            <input 
+                                                type="radio" 
+                                                id="female" 
+                                                name="gender" 
+                                                value="female"
+                                                checked={data.gender === 'female'}
+                                                onChange={e => setData({...data, gender: e.target.value})}
+                                            />
+                                            <label htmlFor="female">Female</label>
                                         </div>
                                     </div>
-                                    <div className="measurement-input">
-                                        <label>Neck (inches)</label>
+
+                                    <div className="form-group">
+                                        <label>Weight (lbs)</label>
                                         <input 
                                             type="number"
-                                            className="input-field"
-                                            value={data.neck || ''}
+                                            className={`input-field ${validationErrors.weight ? 'error' : ''}`}
+                                            value={data.weight}
                                             onChange={e => {
-                                                const neck = e.target.value;
-                                                setData({
-                                                    ...data, 
-                                                    neck,
-                                                    bodyFat: calculateNavyBodyFat({
-                                                        ...data,
-                                                        neck
-                                                    })
-                                                });
+                                                const value = e.target.value;
+                                                const error = validateField('weight', value);
+                                                setValidationErrors({...validationErrors, weight: error});
+                                                setData({...data, weight: value});
                                             }}
                                         />
-                                        <div className="measurement-instruction">
-                                            {data.gender && measurementInstructions[data.gender].neck}
-                                        </div>
+                                        {validationErrors.weight && (
+                                            <div className="error-message">{validationErrors.weight}</div>
+                                        )}
                                     </div>
-                                    {data.gender === 'female' && (
-                                        <div className="measurement-input">
-                                            <label>Hip (inches)</label>
+
+                                    <div className="form-group">
+                                        <label>Height (inches)</label>
+                                        <input 
+                                            type="number"
+                                            className={`input-field ${validationErrors.height ? 'error' : ''}`}
+                                            value={data.height}
+                                            onChange={e => {
+                                                const value = e.target.value;
+                                                const error = validateField('height', value);
+                                                setValidationErrors({...validationErrors, height: error});
+                                                setData({...data, height: value});
+                                            }}
+                                        />
+                                        {validationErrors.height && (
+                                            <div className="error-message">{validationErrors.height}</div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Right Column - Body Composition */}
+                                <div>
+                                    <div className="form-group">
+                                        <label>Body Fat Estimation Method</label>
+                                        <select 
+                                            className="input-field"
+                                            value={data.bodyFatMethod || 'direct'}
+                                            onChange={e => setData({...data, bodyFatMethod: e.target.value})}
+                                        >
+                                            <option value="direct">Direct Input</option>
+                                            <option value="navy">Navy Method</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Body fat input methods */}
+                                    {data.bodyFatMethod === 'direct' ? (
+                                        <div className="form-group">
+                                            <label>Body Fat Percentage</label>
                                             <input 
                                                 type="number"
                                                 className="input-field"
-                                                value={data.hip || ''}
-                                                onChange={e => {
-                                                    const hip = e.target.value;
-                                                    setData({
-                                                        ...data, 
-                                                        hip,
-                                                        bodyFat: calculateNavyBodyFat({
-                                                            ...data,
-                                                            hip
-                                                        })
-                                                    });
-                                                }}
+                                                value={data.bodyFat}
+                                                onChange={e => setData({...data, bodyFat: e.target.value})}
+                                                placeholder="Enter body fat %"
                                             />
-                                            <div className="measurement-instruction">
-                                                {measurementInstructions.female.hip}
+                                            {data.bodyFat && (
+                                                <div className="estimated-bf" style={{marginTop: '10px'}}>
+                                                    Current Body Fat: {data.bodyFat}%
+                                                    <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
+                                                        {data.gender === 'male' ? (
+                                                            `Optimal range for men: 12-18%`
+                                                        ) : (
+                                                            `Optimal range for women: 18-24%`
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="navy-measurements">
+                                            <div className="measurement-input">
+                                                <label>Waist (inches)</label>
+                                                <input 
+                                                    type="number"
+                                                    className="input-field"
+                                                    value={data.waist || ''}
+                                                    onChange={e => {
+                                                        const waist = e.target.value;
+                                                        setData({
+                                                            ...data, 
+                                                            waist,
+                                                            bodyFat: calculateNavyBodyFat({
+                                                                ...data,
+                                                                waist
+                                                            })
+                                                        });
+                                                    }}
+                                                />
+                                                <div className="measurement-instruction">
+                                                    {data.gender && measurementInstructions[data.gender].waist}
+                                                </div>
+                                            </div>
+                                            <div className="measurement-input">
+                                                <label>Neck (inches)</label>
+                                                <input 
+                                                    type="number"
+                                                    className="input-field"
+                                                    value={data.neck || ''}
+                                                    onChange={e => {
+                                                        const neck = e.target.value;
+                                                        setData({
+                                                            ...data, 
+                                                            neck,
+                                                            bodyFat: calculateNavyBodyFat({
+                                                                ...data,
+                                                                neck
+                                                            })
+                                                        });
+                                                    }}
+                                                />
+                                                <div className="measurement-instruction">
+                                                    {data.gender && measurementInstructions[data.gender].neck}
+                                                </div>
+                                            </div>
+                                            {data.gender === 'female' && (
+                                                <div className="measurement-input">
+                                                    <label>Hip (inches)</label>
+                                                    <input 
+                                                        type="number"
+                                                        className="input-field"
+                                                        value={data.hip || ''}
+                                                        onChange={e => {
+                                                            const hip = e.target.value;
+                                                            setData({
+                                                                ...data, 
+                                                                hip,
+                                                                bodyFat: calculateNavyBodyFat({
+                                                                    ...data,
+                                                                    hip
+                                                                })
+                                                            });
+                                                        }}
+                                                    />
+                                                    <div className="measurement-instruction">
+                                                        {measurementInstructions.female.hip}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <div className="estimated-bf">
+                                                Estimated Body Fat: {data.bodyFat || 0}%
+                                                <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
+                                                    {data.gender === 'male' ? (
+                                                        `Optimal range for men: 12-18%`
+                                                    ) : (
+                                                        `Optimal range for women: 18-24%`
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     )}
-                                    <div className="estimated-bf">
-                                        Estimated Body Fat: {data.bodyFat || 0}%
-                                        <div className="bf-range" style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
-                                            {data.gender === 'male' ? (
-                                                `Optimal range for men: 12-18%`
-                                            ) : (
-                                                `Optimal range for women: 18-24%`
-                                            )}
-                                        </div>
-                                    </div>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     )}
                 </div>
