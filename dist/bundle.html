@@ -1491,9 +1491,14 @@ const Calculator = () => {
                                             className="inline-edit"
                                             value={customCarbs}
                                             onChange={(e) => {
-                                                const num = parseInt(e.target.value);
-                                                if (!isNaN(num) && num >= 0) {
-                                                    setCustomCarbs(num);
+                                                const value = e.target.value;
+                                                if (value === '') {
+                                                    setCustomCarbs('');  // Allow empty value while typing
+                                                } else {
+                                                    const num = parseInt(value);
+                                                    if (!isNaN(num) && num >= 0) {
+                                                        setCustomCarbs(num);
+                                                    }
                                                 }
                                             }}
                                             min="0"
