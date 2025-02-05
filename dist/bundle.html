@@ -1189,15 +1189,10 @@ const Calculator = () => {
                                                         className="input-field"
                                                         value={data.waist || ''}
                                                         onChange={e => {
-                                                            const waist = e.target.value;
-                                                            setData({
-                                                                ...data, 
-                                                                waist,
-                                                                bodyFat: calculateNavyBodyFat({
-                                                                    ...data,
-                                                                    waist
-                                                                })
-                                                            });
+                                                            const value = e.target.value;
+                                                            const updatedData = { ...data, waist: value };
+                                                            updatedData.bodyFat = calculateNavyBodyFat(updatedData);
+                                                            setData(updatedData);
                                                         }}
                                                         placeholder="inches"
                                                     />
@@ -1215,15 +1210,10 @@ const Calculator = () => {
                                                         className="input-field"
                                                         value={data.neck || ''}
                                                         onChange={e => {
-                                                            const neck = e.target.value;
-                                                            setData({
-                                                                ...data, 
-                                                                neck,
-                                                                bodyFat: calculateNavyBodyFat({
-                                                                    ...data,
-                                                                    neck
-                                                                })
-                                                            });
+                                                            const value = e.target.value;
+                                                            const updatedData = { ...data, neck: value };
+                                                            updatedData.bodyFat = calculateNavyBodyFat(updatedData);
+                                                            setData(updatedData);
                                                         }}
                                                         placeholder="inches"
                                                     />
@@ -1242,15 +1232,10 @@ const Calculator = () => {
                                                             className="input-field"
                                                             value={data.hip || ''}
                                                             onChange={e => {
-                                                                const hip = e.target.value;
-                                                                setData({
-                                                                    ...data, 
-                                                                    hip,
-                                                                    bodyFat: calculateNavyBodyFat({
-                                                                        ...data,
-                                                                        hip
-                                                                    })
-                                                                });
+                                                                const value = e.target.value;
+                                                                const updatedData = { ...data, hip: value };
+                                                                updatedData.bodyFat = calculateNavyBodyFat(updatedData);
+                                                                setData(updatedData);
                                                             }}
                                                             placeholder="inches"
                                                         />
