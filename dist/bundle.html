@@ -25,7 +25,7 @@
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .gender-group {
@@ -75,13 +75,13 @@
 }
 
 .input-field {
+    padding: 8px 12px;
+    font-size: 14px;
     width: 100%;
     max-width: 100%;
-    padding: 10px 15px;
-    margin: 5px 0;
+    margin: 4px 0;
     border: 1px solid #cbd5e0;
     border-radius: 4px;
-    font-size: 16px;
     box-sizing: border-box;
 }
 
@@ -106,19 +106,8 @@
 }
 
 .activity-button {
-    flex: 1;
-    width: 100%;
-    max-width: none;
-    padding: 12px 24px;
-    border: 2px solid #2c3e50;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-    color: #2c3e50;
-    text-align: left;
-    position: relative;
+    padding: 8px 16px;
+    font-size: 14px;
 }
 
 .activity-button:hover {
@@ -148,21 +137,22 @@
 }
 
 .results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     margin-top: 20px;
-    padding: 20px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    padding: 15px;
+}
+
+.results-section {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 4px;
 }
 
 .macro-result {
-    padding: 6px;
-    margin: 2px 0;
-    background: #f7fafc;
-    border-radius: 4px;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
+    padding: 4px 8px;
+    font-size: 13px;
 }
 
 label {
@@ -199,23 +189,14 @@ label {
 }
 
 .activity-description-box {
-    flex: 1;
-    padding: 15px;
-    background: #f8fafc;
-    border-radius: 4px;
-    min-height: 200px;
-    max-height: 200px;
-    width: 50%;
-    font-size: 14px;
-    line-height: 1.5;
-    white-space: pre-line;
-    border: 1px solid #e2e8f0;
-    overflow-y: auto;
+    min-height: 150px;
+    max-height: 150px;
+    padding: 12px;
+    font-size: 13px;
 }
 
 .slider-container {
-    margin-top: 30px;
-    width: 100%;
+    padding-top: 10px;
 }
 
 .slider-value {
@@ -318,10 +299,15 @@ label {
 }
 
 .customize-section {
-    background: #f8fafc;
-    padding: 15px;
-    border-radius: 4px;
-    margin-bottom: 15px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.customize-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .macro-customize {
@@ -442,6 +428,83 @@ label {
 .basic-info-row .number-input-group {
     flex: 1;
 }
+
+/* Update accordion styles */
+.accordion-content {
+    padding: 15px;
+}
+
+.accordion-header {
+    padding: 10px 15px;
+}
+
+/* Update input fields */
+.input-field {
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 100%;
+    margin: 4px 0;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Update activity buttons */
+.activity-button {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+/* Update results layout */
+.results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.results-section {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.macro-result {
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+/* Update customization section */
+.customize-section {
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.customize-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.slider-container {
+    padding-top: 10px;
+}
+
+/* Make accordion sections more compact */
+.accordion-section {
+    margin-bottom: 8px;
+}
+
+.accordion-header {
+    padding: 10px 15px;
+}
+
+.accordion-content {
+    padding: 15px;
+}
 </style>
 
 <!-- React Component -->
@@ -493,10 +556,10 @@ const Calculator = () => {
         section: {
             border: '1px solid #e2e8f0',
             borderRadius: '4px',
-            marginBottom: '10px'
+            marginBottom: '8px'
         },
         header: {
-            padding: '15px',
+            padding: '10px 15px',
             background: '#f8fafc',
             cursor: 'pointer',
             display: 'flex',
@@ -504,12 +567,12 @@ const Calculator = () => {
             alignItems: 'center'
         },
         content: {
-            padding: '20px',
+            padding: '15px',
             borderTop: '1px solid #e2e8f0'
         },
         title: {
             margin: 0,
-            fontSize: '16px',
+            fontSize: '15px',
             fontWeight: '500'
         }
     };
@@ -995,25 +1058,10 @@ const Calculator = () => {
             {/* Results Section */}
             {results && (
                 <div className="results">
-                    <h3>Your Results</h3>
-                    
                     {/* Energy Breakdown Section */}
-                    <div style={{
-                        marginBottom: '12px',
-                        padding: '10px',
-                        background: '#f8fafc',
-                        borderRadius: '4px'
-                    }}>
-                        <h4 style={{
-                            marginTop: 0,
-                            marginBottom: '6px',
-                            fontSize: '16px'
-                        }}>Energy Breakdown</h4>
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '2px'
-                        }}>
+                    <div className="results-section">
+                        <h4 style={{margin: '0 0 10px 0'}}>Energy Breakdown</h4>
+                        <div className="macro-results">
                             <div className="macro-result">
                                 <span>Base Metabolic Rate (BMR):</span>
                                 <span>{(results.energyData && results.energyData.bmr) || 0} calories</span>
@@ -1040,8 +1088,9 @@ const Calculator = () => {
                             </div>
                         </div>
                     </div>
-                    {/* Macronutrient Breakdown */}
-                    <div>
+
+                    {/* Macronutrient Section */}
+                    <div className="results-section">
                         <div style={{
                             display: 'flex',
                             justifyContent: 'space-between',
@@ -1053,13 +1102,13 @@ const Calculator = () => {
                                 className="customize-button"
                                 onClick={() => setShowCustomize(!showCustomize)}
                             >
-                                {showCustomize ? 'Hide Customization' : 'Customize'}
+                                {showCustomize ? 'Hide' : 'Customize'}
                             </button>
                         </div>
-                        
+
                         {showCustomize && (
                             <div className="customize-section">
-                                <div className="customize-row" style={{marginBottom: '15px'}}>
+                                <div className="customize-grid">
                                     <div className="macro-customize">
                                         <label>Protein Modifier (g/lb LBM)</label>
                                         <input 
@@ -1104,8 +1153,7 @@ const Calculator = () => {
                                         />
                                     </div>
                                 </div>
-                                
-                                <div className="slider-container" style={{marginBottom: '15px'}}>
+                                <div className="slider-container">
                                     <label>Calorie Adjustment</label>
                                     <div className="slider-value" style={{
                                         color: Math.abs(calorieAdjustment) <= 10 ? '#2f855a' :
