@@ -1345,25 +1345,38 @@ const Calculator = () => {
         setEmailStatus('');
 
         try {
-            // Subscribe to Squarespace Email Campaigns
-            const response = await fetch('/api/email-campaigns/submit', {
+            const response = await fetch('https://dandelion-frog-dgph.squarespace.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: new URLSearchParams({
-                    'listId': 'YOUR_LIST_ID', // Get this from Squarespace
+                    'formId': '67a2f70b5281aa0db7fd6e58',
+                    'collectionId': '679ed22f8d67d765a0cfdc43',
+                    'objectName': 'yui_3_17_2_1_1738733126942_2019',
                     'email': email,
-                    'firstName': '',  // Optional
-                    'lastName': '',   // Optional
-                    'source': 'Macro Calculator'
+                    'fname': '',  // Optional: First name if you want to collect it
+                    'lname': '',  // Optional: Last name if you want to collect it
+                    'text': 'Macro Calculator Signup',  // Subject field
+                    'textarea': JSON.stringify({  // Message field with calculator results
+                        height: data.height,
+                        weight: data.weight,
+                        bodyFat: data.bodyFat,
+                        activity: data.activity,
+                        goal: data.goal,
+                        results: {
+                            calories: results.calories,
+                            protein: results.protein,
+                            carbs: results.carbs,
+                            fat: results.fat
+                        }
+                    })
                 })
             });
 
             if (response.ok) {
                 setEmailStatus('success');
                 setEmail('');
-                // Generate and send PDF automatically
                 generatePDF();
             } else {
                 throw new Error('Failed to subscribe');
