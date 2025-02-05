@@ -505,6 +505,25 @@ label {
 .accordion-content {
     padding: 15px;
 }
+
+.info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #718096;
+    border-radius: 50%;
+    font-size: 12px;
+    color: #718096;
+    margin-left: 4px;
+    cursor: help;
+}
+
+.energy-label {
+    display: flex;
+    align-items: center;
+}
 </style>
 
 <!-- React Component -->
@@ -580,6 +599,12 @@ const Calculator = () => {
     // Calculate function - handles all the macro calculations
     const calculate = (e) => {
         e.preventDefault();
+        // Collapse all sections
+        setOpenSections({
+            basics: false,
+            bodyComp: false,
+            activity: false
+        });
         const weight = parseFloat(data.weight);
         const height = parseFloat(data.height);
         const bodyFat = parseFloat(data.bodyFat);
@@ -1063,28 +1088,68 @@ const Calculator = () => {
                         <h4 style={{margin: '0 0 10px 0'}}>Energy Breakdown</h4>
                         <div className="macro-results">
                             <div className="macro-result">
-                                <span>Base Metabolic Rate (BMR):</span>
-                                <span>{(results.energyData && results.energyData.bmr) || 0} calories</span>
+                                <span className="energy-label">
+                                    BMR
+                                    <span 
+                                        className="info-icon" 
+                                        title="Base Metabolic Rate: The calories your body burns at complete rest"
+                                    >
+                                        i
+                                    </span>
+                                </span>
+                                <span>{(results.energyData && results.energyData.bmr) || 0} cal</span>
                             </div>
                             <div className="macro-result">
-                                <span>Activity Calories:</span>
-                                <span>+{(results.energyData && results.energyData.activityCalories) || 0} calories</span>
+                                <span className="energy-label">
+                                    Activity
+                                    <span 
+                                        className="info-icon" 
+                                        title="Additional calories burned from daily activities (excluding workouts)"
+                                    >
+                                        i
+                                    </span>
+                                </span>
+                                <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
                             </div>
                             <div className="macro-result" style={{fontWeight: 'bold'}}>
-                                <span>Total Daily Energy Expenditure:</span>
-                                <span>{(results.energyData && results.energyData.tdee) || 0} calories</span>
+                                <span className="energy-label">
+                                    TDEE
+                                    <span 
+                                        className="info-icon" 
+                                        title="Total Daily Energy Expenditure: Your total daily calorie burn"
+                                    >
+                                        i
+                                    </span>
+                                </span>
+                                <span>{(results.energyData && results.energyData.tdee) || 0} cal</span>
                             </div>
                             <div className="macro-result" style={{
                                 color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
                                        results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
                             }}>
-                                <span>Goal Adjustment:</span>
+                                <span className="energy-label">
+                                    Adjustment
+                                    <span 
+                                        className="info-icon" 
+                                        title="Calorie adjustment based on your selected goal"
+                                    >
+                                        i
+                                    </span>
+                                </span>
                                 <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
                                        ((results.energyData && results.energyData.calorieAdjustment) || 0)}%</span>
                             </div>
-                            <div className="macro-result" style={{fontWeight: 'bold', fontSize: '18px'}}>
-                                <span>Target Daily Calories:</span>
-                                <span>{results.calories} calories</span>
+                            <div className="macro-result" style={{fontWeight: 'bold', fontSize: '16px'}}>
+                                <span className="energy-label">
+                                    Target
+                                    <span 
+                                        className="info-icon" 
+                                        title="Your daily calorie target based on TDEE and goal adjustment"
+                                    >
+                                        i
+                                    </span>
+                                </span>
+                                <span>{results.calories} cal</span>
                             </div>
                         </div>
                     </div>
