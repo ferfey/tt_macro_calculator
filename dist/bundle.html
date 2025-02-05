@@ -1318,7 +1318,21 @@ const Calculator = () => {
 
                     {/* Macronutrient Section */}
                     <div className="results-section">
-                        <h4 style={{margin: '0 0 10px 0'}}>Macronutrient Targets</h4>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '10px'
+                        }}>
+                            <h4 style={{margin: 0}}>Macronutrient Targets</h4>
+                            <button 
+                                className="edit-icon"
+                                onClick={() => setShowCustomize(!showCustomize)}
+                                title="Customize macros"
+                            >
+                                {showCustomize ? '✓' : '✎'}
+                            </button>
+                        </div>
                         <div className="macro-results">
                             <div className="macro-result">
                                 <span>
@@ -1343,13 +1357,6 @@ const Calculator = () => {
                                         results.protein
                                     )}
                                     g
-                                    <button 
-                                        className="edit-icon"
-                                        onClick={() => setShowCustomize(!showCustomize)}
-                                        title="Customize protein ratio"
-                                    >
-                                        ✎
-                                    </button>
                                 </span>
                             </div>
                             <div className="macro-result">
@@ -1372,13 +1379,6 @@ const Calculator = () => {
                                         results.carbs
                                     )}
                                     g
-                                    <button 
-                                        className="edit-icon"
-                                        onClick={() => setShowCustomize(!showCustomize)}
-                                        title="Customize carb intake"
-                                    >
-                                        ✎
-                                    </button>
                                 </span>
                             </div>
                             <div className="macro-result">
