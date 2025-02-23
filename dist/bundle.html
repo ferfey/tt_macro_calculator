@@ -1721,265 +1721,269 @@ const Calculator = () => {
                 </button>
             </form>
             {/* Results Section */}
-            <div className="results">
-                {/* Energy Breakdown Section */}
-                <div className="results-section">
-                    <h4 style={{margin: '0 0 10px 0'}}>Energy Breakdown</h4>
-                    <div className="macro-results">
-                        <div className="macro-result">
-                            <span className="tooltip" title="Basal Metabolic Rate: The calories your body burns at complete rest">
-                                BMR
-                            </span>
-                            <span>{(results.energyData && results.energyData.bmr) || 0} cal</span>
-                        </div>
-                        <div className="macro-result">
-                            <span className="tooltip" title="Additional calories burned from daily activities (excluding workouts)">
-                                Activity
-                            </span>
-                            <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
-                        </div>
-                        <div className="macro-result">
-                            <span className="tooltip" title="Total Daily Energy Expenditure: Your total daily calorie burn">
-                                TDEE
-                            </span>
-                            <span>{(results.energyData && results.energyData.tdee) || 0} cal</span>
-                        </div>
-                        <div className="macro-result" style={{
-                            color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
-                                   results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
-                        }}>
-                            <span className="tooltip" title="Calorie adjustment based on your selected goal">
-                                Adjustment
-                            </span>
-                            <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
-                                   ((results.energyData && results.energyData.calorieAdjustment) || 0)}%</span>
-                        </div>
-                        <div className="target-divider" />
-                        <div className="macro-result" style={{fontWeight: 'bold', fontSize: '16px'}}>
-                            <span>Daily Calories</span>
-                            <span>{results.calories}</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Macronutrient Section */}
-                <div className="results-section">
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: '10px'
-                    }}>
-                        <h4 style={{margin: 0}}>Macronutrient Targets</h4>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            <button 
-                                className="print-button"
-                                onClick={generatePDF}
-                                title="Download PDF"
-                            >
-                                💾
-                            </button>
-                            <button 
-                                className="edit-icon"
-                                onClick={() => setShowCustomize(!showCustomize)}
-                                title="Customize macros"
-                            >
-                                {showCustomize ? '✓' : '✏️'}
-                            </button>
-                        </div>
-                    </div>
-                    <div className="macro-results">
-                        <div className="macro-result">
-                            <span>
-                                Protein ({Math.round(results.protein/leanMass * 10) / 10}g/lb LBM)
-                            </span>
-                            <span className="macro-value">
-                                {showCustomize ? (
-                                    <input 
-                                        type="number"
-                                        className="inline-edit"
-                                        value={proteinMultiplier}
-                                        onChange={(e) => {
-                                            const num = parseFloat(e.target.value);
-                                            if (!isNaN(num) && num >= 0) {
-                                                setProteinMultiplier(num);
-                                            }
-                                        }}
-                                        min="0"
-                                        step="0.1"
-                                    />
-                                ) : (
-                                    results.protein
-                                )}
-                                g
-                            </span>
-                        </div>
-                        <div className="macro-result">
-                            <span>Carbs</span>
-                            <span className="macro-value">
-                                {showCustomize ? (
-                                    <input 
-                                        type="number"
-                                        className="inline-edit"
-                                        value={customCarbs}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            if (value === '') {
-                                                setCustomCarbs('');  // Allow empty value while typing
-                                            } else {
-                                                const num = parseInt(value);
-                                                if (!isNaN(num) && num >= 0) {
-                                                    setCustomCarbs(num);
-                                                }
-                                            }
-                                        }}
-                                        min="0"
-                                    />
-                                ) : (
-                                    results.carbs
-                                )}
-                                g
-                            </span>
-                        </div>
-                        <div className="macro-result">
-                            <span>Fat</span>
-                            <span>{results.fat}g</span>
-                        </div>
-                    </div>
-                    
-                    {showCustomize && (
-                        <div className="customize-panel">
-                            <div className="slider-container">
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    marginBottom: '10px'
-                                }}>
-                                    <label>Goal Adjustment</label>
-                                    <span style={{
-                                        color: Math.abs(calorieAdjustment) <= 10 ? '#2f855a' :
-                                               Math.abs(calorieAdjustment) <= 20 ? '#ecc94b' : '#e53e3e'
-                                    }}>
-                                        {calorieAdjustment > 0 ? '+' : ''}{calorieAdjustment}%
+            {results && (
+                <div>
+                    <div className="results">
+                        {/* Energy Breakdown Section */}
+                        <div className="results-section">
+                            <h4 style={{margin: '0 0 10px 0'}}>Energy Breakdown</h4>
+                            <div className="macro-results">
+                                <div className="macro-result">
+                                    <span className="tooltip" title="Basal Metabolic Rate: The calories your body burns at complete rest">
+                                        BMR
                                     </span>
+                                    <span>{(results.energyData && results.energyData.bmr) || 0} cal</span>
                                 </div>
-                                <input
-                                    type="range"
-                                    min="-30"
-                                    max="30"
-                                    step="5"
-                                    value={calorieAdjustment}
-                                    onChange={(e) => setCalorieAdjustment(parseInt(e.target.value))}
-                                    className={`slider ${
-                                        Math.abs(calorieAdjustment) <= 10 ? 'green' :
-                                        Math.abs(calorieAdjustment) <= 20 ? 'yellow' : 'red'
-                                    }`}
-                                />
-                                <div className="slider-labels">
-                                    <span>-30%</span>
-                                    <span>0%</span>
-                                    <span>+30%</span>
+                                <div className="macro-result">
+                                    <span className="tooltip" title="Additional calories burned from daily activities (excluding workouts)">
+                                        Activity
+                                    </span>
+                                    <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
                                 </div>
-                                {Math.abs(calorieAdjustment) >= 30 && (
-                                    <div className="warning-text">
-                                        {calorieAdjustment < 0 
-                                            ? "Warning: This is a very aggressive deficit"
-                                            : "Warning: This is a very aggressive surplus"}
-                                    </div>
-                                )}
+                                <div className="macro-result">
+                                    <span className="tooltip" title="Total Daily Energy Expenditure: Your total daily calorie burn">
+                                        TDEE
+                                    </span>
+                                    <span>{(results.energyData && results.energyData.tdee) || 0} cal</span>
+                                </div>
+                                <div className="macro-result" style={{
+                                    color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
+                                           results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
+                                }}>
+                                    <span className="tooltip" title="Calorie adjustment based on your selected goal">
+                                        Adjustment
+                                    </span>
+                                    <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
+                                           ((results.energyData && results.energyData.calorieAdjustment) || 0)}%</span>
+                                </div>
+                                <div className="target-divider" />
+                                <div className="macro-result" style={{fontWeight: 'bold', fontSize: '16px'}}>
+                                    <span>Daily Calories</span>
+                                    <span>{results.calories}</span>
+                                </div>
                             </div>
                         </div>
-                    )}
+
+                        {/* Macronutrient Section */}
+                        <div className="results-section">
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginBottom: '10px'
+                            }}>
+                                <h4 style={{margin: 0}}>Macronutrient Targets</h4>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button 
+                                        className="print-button"
+                                        onClick={generatePDF}
+                                        title="Download PDF"
+                                    >
+                                        💾
+                                    </button>
+                                    <button 
+                                        className="edit-icon"
+                                        onClick={() => setShowCustomize(!showCustomize)}
+                                        title="Customize macros"
+                                    >
+                                        {showCustomize ? '✓' : '✏️'}
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="macro-results">
+                                <div className="macro-result">
+                                    <span>
+                                        Protein ({Math.round(results.protein/leanMass * 10) / 10}g/lb LBM)
+                                    </span>
+                                    <span className="macro-value">
+                                        {showCustomize ? (
+                                            <input 
+                                                type="number"
+                                                className="inline-edit"
+                                                value={proteinMultiplier}
+                                                onChange={(e) => {
+                                                    const num = parseFloat(e.target.value);
+                                                    if (!isNaN(num) && num >= 0) {
+                                                        setProteinMultiplier(num);
+                                                    }
+                                                }}
+                                                min="0"
+                                                step="0.1"
+                                            />
+                                        ) : (
+                                            results.protein
+                                        )}
+                                        g
+                                    </span>
+                                </div>
+                                <div className="macro-result">
+                                    <span>Carbs</span>
+                                    <span className="macro-value">
+                                        {showCustomize ? (
+                                            <input 
+                                                type="number"
+                                                className="inline-edit"
+                                                value={customCarbs}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    if (value === '') {
+                                                        setCustomCarbs('');  // Allow empty value while typing
+                                                    } else {
+                                                        const num = parseInt(value);
+                                                        if (!isNaN(num) && num >= 0) {
+                                                            setCustomCarbs(num);
+                                                        }
+                                                    }
+                                                }}
+                                                min="0"
+                                            />
+                                        ) : (
+                                            results.carbs
+                                        )}
+                                        g
+                                    </span>
+                                </div>
+                                <div className="macro-result">
+                                    <span>Fat</span>
+                                    <span>{results.fat}g</span>
+                                </div>
+                            </div>
+                            
+                            {showCustomize && (
+                                <div className="customize-panel">
+                                    <div className="slider-container">
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            marginBottom: '10px'
+                                        }}>
+                                            <label>Goal Adjustment</label>
+                                            <span style={{
+                                                color: Math.abs(calorieAdjustment) <= 10 ? '#2f855a' :
+                                                       Math.abs(calorieAdjustment) <= 20 ? '#ecc94b' : '#e53e3e'
+                                            }}>
+                                                {calorieAdjustment > 0 ? '+' : ''}{calorieAdjustment}%
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="-30"
+                                            max="30"
+                                            step="5"
+                                            value={calorieAdjustment}
+                                            onChange={(e) => setCalorieAdjustment(parseInt(e.target.value))}
+                                            className={`slider ${
+                                                Math.abs(calorieAdjustment) <= 10 ? 'green' :
+                                                Math.abs(calorieAdjustment) <= 20 ? 'yellow' : 'red'
+                                            }`}
+                                        />
+                                        <div className="slider-labels">
+                                            <span>-30%</span>
+                                            <span>0%</span>
+                                            <span>+30%</span>
+                                        </div>
+                                        {Math.abs(calorieAdjustment) >= 30 && (
+                                            <div className="warning-text">
+                                                {calorieAdjustment < 0 
+                                                    ? "Warning: This is a very aggressive deficit"
+                                                    : "Warning: This is a very aggressive surplus"}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Keep Methodology Section Visible */}
+                    <div className="methodology-section">
+                        <h4 onClick={() => setShowMethodology(!showMethodology)}>
+                            Calculation Methodology {showMethodology ? '−' : '+'}
+                        </h4>
+                        {showMethodology && (
+                            <div className="methodology-content">
+                                <div className="methodology-subsection">
+                                    <h5>Basal Metabolic Rate (BMR)</h5>
+                                    <p>BMR is calculated using the Katch-McArdle formula, which is more accurate than other methods as it accounts for lean body mass:</p>
+                                    <div className="formula">BMR = 370 + (21.6 × Lean Body Mass in kg)</div>
+                                </div>
+
+                                <div className="methodology-subsection">
+                                    <h5>Total Daily Energy Expenditure (TDEE)</h5>
+                                    <p>TDEE is calculated by multiplying BMR by an activity multiplier:</p>
+                                    <ul>
+                                        <li>Sedentary: × 1.2</li>
+                                        <li>Lightly Active: × 1.375</li>
+                                        <li>Moderately Active: × 1.55</li>
+                                        <li>Very Active: × 1.725</li>
+                                    </ul>
+                                </div>
+
+                                <div className="methodology-subsection">
+                                    <h5>Body Fat Estimation</h5>
+                                    <p>The Navy Method uses the following formulas:</p>
+                                    <p><strong>Male:</strong></p>
+                                    <div className="formula">%BF = 86.010×log10(waist-neck) - 70.041×log10(height) + 36.76</div>
+                                    <p><strong>Female:</strong></p>
+                                    <div className="formula">%BF = 163.205×log10(waist+hip-neck) - 97.684×log10(height) - 78.387</div>
+                                </div>
+
+                                <div className="methodology-subsection">
+                                    <h5>Macronutrient Calculations</h5>
+                                    <p>Default macronutrient targets are set based on these principles:</p>
+                                    <ul>
+                                        <li>Protein: 1g per pound of lean body mass</li>
+                                        <li>Fat: 25% of total calories (minimum healthy threshold)</li>
+                                        <li>Carbs: Remaining calories after protein and fat</li>
+                                    </ul>
+                                    <p>These can be customized based on individual preferences and goals.</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Email Form Section */}
+                    <div className="email-form">
+                        <h5>Get Your Results by Email</h5>
+                        <p>We'll send you your personalized plan and keep you updated with nutrition tips and exclusive offers.</p>
+                        <form onSubmit={handleEmailSubmit} className="email-input-group">
+                            <input
+                                type="email"
+                                className="email-input"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Enter your email"
+                                required
+                            />
+                            <button 
+                                type="submit" 
+                                className="email-button"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? 'Sending...' : 'Send Results'}
+                            </button>
+                        </form>
+                        {emailStatus === 'success' && (
+                            <div className="email-status success">
+                                Great! Check your email for your personalized plan.
+                            </div>
+                        )}
+                        {emailStatus === 'error' && (
+                            <div className="email-status error">
+                                Sorry, there was an error. Please try again.
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Hidden Summary Section for PDF Generation */}
+                    <div style={{ display: 'none' }}>
+                        <div className="summary-content">
+                            {/* ... summary content for PDF ... */}
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            {/* Keep Methodology Section Visible */}
-            <div className="methodology-section">
-                <h4 onClick={() => setShowMethodology(!showMethodology)}>
-                    Calculation Methodology {showMethodology ? '−' : '+'}
-                </h4>
-                {showMethodology && (
-                    <div className="methodology-content">
-                        <div className="methodology-subsection">
-                            <h5>Basal Metabolic Rate (BMR)</h5>
-                            <p>BMR is calculated using the Katch-McArdle formula, which is more accurate than other methods as it accounts for lean body mass:</p>
-                            <div className="formula">BMR = 370 + (21.6 × Lean Body Mass in kg)</div>
-                        </div>
-
-                        <div className="methodology-subsection">
-                            <h5>Total Daily Energy Expenditure (TDEE)</h5>
-                            <p>TDEE is calculated by multiplying BMR by an activity multiplier:</p>
-                            <ul>
-                                <li>Sedentary: × 1.2</li>
-                                <li>Lightly Active: × 1.375</li>
-                                <li>Moderately Active: × 1.55</li>
-                                <li>Very Active: × 1.725</li>
-                            </ul>
-                        </div>
-
-                        <div className="methodology-subsection">
-                            <h5>Body Fat Estimation</h5>
-                            <p>The Navy Method uses the following formulas:</p>
-                            <p><strong>Male:</strong></p>
-                            <div className="formula">%BF = 86.010×log10(waist-neck) - 70.041×log10(height) + 36.76</div>
-                            <p><strong>Female:</strong></p>
-                            <div className="formula">%BF = 163.205×log10(waist+hip-neck) - 97.684×log10(height) - 78.387</div>
-                        </div>
-
-                        <div className="methodology-subsection">
-                            <h5>Macronutrient Calculations</h5>
-                            <p>Default macronutrient targets are set based on these principles:</p>
-                            <ul>
-                                <li>Protein: 1g per pound of lean body mass</li>
-                                <li>Fat: 25% of total calories (minimum healthy threshold)</li>
-                                <li>Carbs: Remaining calories after protein and fat</li>
-                            </ul>
-                            <p>These can be customized based on individual preferences and goals.</p>
-                        </div>
-                    </div>
-                )}
-            </div>
-
-            {/* Email Form Section */}
-            <div className="email-form">
-                <h5>Get Your Results by Email</h5>
-                <p>We'll send you your personalized plan and keep you updated with nutrition tips and exclusive offers.</p>
-                <form onSubmit={handleEmailSubmit} className="email-input-group">
-                    <input
-                        type="email"
-                        className="email-input"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
-                        required
-                    />
-                    <button 
-                        type="submit" 
-                        className="email-button"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Sending...' : 'Send Results'}
-                    </button>
-                </form>
-                {emailStatus === 'success' && (
-                    <div className="email-status success">
-                        Great! Check your email for your personalized plan.
-                    </div>
-                )}
-                {emailStatus === 'error' && (
-                    <div className="email-status error">
-                        Sorry, there was an error. Please try again.
-                    </div>
-                )}
-            </div>
-
-            {/* Hidden Summary Section for PDF Generation */}
-            <div style={{ display: 'none' }}>
-                <div className="summary-content">
-                    {/* ... summary content for PDF ... */}
-                </div>
-            </div>
+            )}
         </div>
     );
 };
