@@ -1148,7 +1148,7 @@ const Calculator = () => {
         
         const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
         const carbs = parseInt(customCarbs);
-        const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
+        const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9);
 
         const newResults = {
             calories: Math.round(adjustedCalories),
@@ -1181,7 +1181,7 @@ const Calculator = () => {
             
             const protein = Math.round(leanMass * parseFloat(proteinMultiplier));
             const carbs = parseInt(customCarbs);
-            const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
+            const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9);
 
             setResults({
                 calories: Math.round(adjustedCalories),
@@ -1930,12 +1930,14 @@ const Calculator = () => {
                     <div className="summary-section">
                         <div className="summary-header">
                             <h4 style={{margin: 0}}>Your Personalized Nutrition Plan</h4>
-                            <button 
-                                className="print-button"
-                                onClick={generatePDF}
-                            >
-                                Download PDF 📄
-                            </button>
+                            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+                                <button 
+                                    className="print-button"
+                                    onClick={generatePDF}
+                                >
+                                    Download PDF 📄
+                                </button>
+                            </div>
                         </div>
                         <div className="summary-content">
                             <p>Based on your profile:</p>
