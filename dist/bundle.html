@@ -1148,7 +1148,7 @@ const Calculator = () => {
         
         const protein = Math.round(currentLeanMass * parseFloat(proteinMultiplier));
         const carbs = parseInt(customCarbs);
-        const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9);
+        const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
 
         const newResults = {
             calories: Math.round(adjustedCalories),
@@ -1181,7 +1181,7 @@ const Calculator = () => {
             
             const protein = Math.round(leanMass * parseFloat(proteinMultiplier));
             const carbs = parseInt(customCarbs);
-            const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9);
+            const fat = Math.max(0, Math.round((adjustedCalories - (protein * 4) - (carbs * 4)) / 9));
 
             setResults({
                 calories: Math.round(adjustedCalories),
