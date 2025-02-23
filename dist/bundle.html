@@ -1176,7 +1176,7 @@ const Calculator = () => {
                 calorieAdjustment: calorieAdjustment
             };
             
-            const baseCalories = results.energyData.tdee;  // Use TDEE as base
+            const baseCalories = results.energyData.tdee;
             const adjustedCalories = baseCalories * (1 + (calorieAdjustment / 100));
             
             const protein = Math.round(leanMass * parseFloat(proteinMultiplier));
