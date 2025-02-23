@@ -1732,29 +1732,29 @@ const Calculator = () => {
                                     <span className="tooltip" title="Basal Metabolic Rate: The calories your body burns at complete rest">
                                         BMR
                                     </span>
-                                    <span>{(results.energyData && results.energyData.bmr) || 0} cal</span>
+                                    <span>{results?.energyData?.bmr || 0} cal</span>
                                 </div>
                                 <div className="macro-result">
                                     <span className="tooltip" title="Additional calories burned from daily activities (excluding workouts)">
                                         Activity
                                     </span>
-                                    <span>+{(results.energyData && results.energyData.activityCalories) || 0} cal</span>
+                                    <span>+{results?.energyData?.activityCalories || 0} cal</span>
                                 </div>
                                 <div className="macro-result">
                                     <span className="tooltip" title="Total Daily Energy Expenditure: Your total daily calorie burn">
                                         TDEE
                                     </span>
-                                    <span>{(results.energyData && results.energyData.tdee) || 0} cal</span>
+                                    <span>{results?.energyData?.tdee || 0} cal</span>
                                 </div>
                                 <div className="macro-result" style={{
-                                    color: (!results.energyData || !results.energyData.calorieAdjustment) ? '#2c3e50' :
+                                    color: (!results?.energyData?.calorieAdjustment) ? '#2c3e50' :
                                            results.energyData.calorieAdjustment < 0 ? '#e53e3e' : '#2f855a'
                                 }}>
                                     <span className="tooltip" title="Calorie adjustment based on your selected goal">
                                         Adjustment
                                     </span>
-                                    <span>{(results.energyData && results.energyData.calorieAdjustment > 0 ? '+' : '') + 
-                                           ((results.energyData && results.energyData.calorieAdjustment) || 0)}%</span>
+                                    <span>{(results?.energyData?.calorieAdjustment > 0 ? '+' : '') + 
+                                           (results?.energyData?.calorieAdjustment || 0)}%</span>
                                 </div>
                                 <div className="target-divider" />
                                 <div className="macro-result" style={{fontWeight: 'bold', fontSize: '16px'}}>
