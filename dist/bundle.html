@@ -878,21 +878,25 @@ label {
 }
 
 .print-button {
-    background: #2c3e50;
-    color: white;
-    padding: 6px 12px;
-    border: none;
+    background: none;
+    border: 1px solid #2c3e50;
+    color: #2c3e50;
+    width: 28px;
+    height: 28px;
     border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 13px;
+    justify-content: center;
     transition: all 0.2s ease;
+    padding: 0;
 }
 
 .print-button:hover {
-    background: #34495e;
+    background: #2c3e50;
+    color: white;
+    border-color: #2c3e50;
 }
 
 /* Print styles */
@@ -1776,7 +1780,7 @@ const Calculator = () => {
                                         onClick={generatePDF}
                                         title="Download PDF summary"
                                     >
-                                        Download PDF 📄
+                                        📄
                                     </button>
                                     <button 
                                         className={`edit-icon ${showCustomize ? 'active' : ''}`}
