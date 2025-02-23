@@ -1892,50 +1892,52 @@ const Calculator = () => {
                             )}
                         </div>
                     </div>
-                    <div className="methodology-section">
-                        <h4 onClick={() => setShowMethodology(!showMethodology)}>
-                            Calculation Methodology {showMethodology ? '−' : '+'}
-                        </h4>
-                        {showMethodology && (
-                            <div className="methodology-content">
-                                <div className="methodology-subsection">
-                                    <h5>Basal Metabolic Rate (BMR)</h5>
-                                    <p>BMR is calculated using the Katch-McArdle formula, which is more accurate than other methods as it accounts for lean body mass:</p>
-                                    <div className="formula">BMR = 370 + (21.6 × Lean Body Mass in kg)</div>
-                                </div>
+                    <div style={{ display: 'none' }}>
+                        <div className="methodology-section">
+                            <h4 onClick={() => setShowMethodology(!showMethodology)}>
+                                Calculation Methodology {showMethodology ? '−' : '+'}
+                            </h4>
+                            {showMethodology && (
+                                <div className="methodology-content">
+                                    <div className="methodology-subsection">
+                                        <h5>Basal Metabolic Rate (BMR)</h5>
+                                        <p>BMR is calculated using the Katch-McArdle formula, which is more accurate than other methods as it accounts for lean body mass:</p>
+                                        <div className="formula">BMR = 370 + (21.6 × Lean Body Mass in kg)</div>
+                                    </div>
 
-                                <div className="methodology-subsection">
-                                    <h5>Total Daily Energy Expenditure (TDEE)</h5>
-                                    <p>TDEE is calculated by multiplying BMR by an activity multiplier:</p>
-                                    <ul>
-                                        <li>Sedentary: × 1.2</li>
-                                        <li>Lightly Active: × 1.375</li>
-                                        <li>Moderately Active: × 1.55</li>
-                                        <li>Very Active: × 1.725</li>
-                                    </ul>
-                                </div>
+                                    <div className="methodology-subsection">
+                                        <h5>Total Daily Energy Expenditure (TDEE)</h5>
+                                        <p>TDEE is calculated by multiplying BMR by an activity multiplier:</p>
+                                        <ul>
+                                            <li>Sedentary: × 1.2</li>
+                                            <li>Lightly Active: × 1.375</li>
+                                            <li>Moderately Active: × 1.55</li>
+                                            <li>Very Active: × 1.725</li>
+                                        </ul>
+                                    </div>
 
-                                <div className="methodology-subsection">
-                                    <h5>Body Fat Estimation</h5>
-                                    <p>The Navy Method uses the following formulas:</p>
-                                    <p><strong>Male:</strong></p>
-                                    <div className="formula">%BF = 86.010×log10(waist-neck) - 70.041×log10(height) + 36.76</div>
-                                    <p><strong>Female:</strong></p>
-                                    <div className="formula">%BF = 163.205×log10(waist+hip-neck) - 97.684×log10(height) - 78.387</div>
-                                </div>
+                                    <div className="methodology-subsection">
+                                        <h5>Body Fat Estimation</h5>
+                                        <p>The Navy Method uses the following formulas:</p>
+                                        <p><strong>Male:</strong></p>
+                                        <div className="formula">%BF = 86.010×log10(waist-neck) - 70.041×log10(height) + 36.76</div>
+                                        <p><strong>Female:</strong></p>
+                                        <div className="formula">%BF = 163.205×log10(waist+hip-neck) - 97.684×log10(height) - 78.387</div>
+                                    </div>
 
-                                <div className="methodology-subsection">
-                                    <h5>Macronutrient Calculations</h5>
-                                    <p>Default macronutrient targets are set based on these principles:</p>
-                                    <ul>
-                                        <li>Protein: 1g per pound of lean body mass</li>
-                                        <li>Fat: 25% of total calories (minimum healthy threshold)</li>
-                                        <li>Carbs: Remaining calories after protein and fat</li>
-                                    </ul>
-                                    <p>These can be customized based on individual preferences and goals.</p>
+                                    <div className="methodology-subsection">
+                                        <h5>Macronutrient Calculations</h5>
+                                        <p>Default macronutrient targets are set based on these principles:</p>
+                                        <ul>
+                                            <li>Protein: 1g per pound of lean body mass</li>
+                                            <li>Fat: 25% of total calories (minimum healthy threshold)</li>
+                                            <li>Carbs: Remaining calories after protein and fat</li>
+                                        </ul>
+                                        <p>These can be customized based on individual preferences and goals.</p>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                 </div>
             )}
