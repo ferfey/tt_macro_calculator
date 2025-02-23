@@ -880,14 +880,15 @@ label {
 .print-button {
     background: #2c3e50;
     color: white;
-    padding: 8px 16px;
+    padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 14px;
+    gap: 4px;
+    font-size: 13px;
+    transition: all 0.2s ease;
 }
 
 .print-button:hover {
@@ -1769,13 +1770,22 @@ const Calculator = () => {
                                 marginBottom: '10px'
                             }}>
                                 <h4 style={{margin: 0}}>Macronutrient Targets</h4>
-                                <button 
-                                    className={`edit-icon ${showCustomize ? 'active' : ''}`}
-                                    onClick={() => setShowCustomize(!showCustomize)}
-                                    title="Customize macros"
-                                >
-                                    {showCustomize ? '✓' : '✎'}
-                                </button>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button 
+                                        className="print-button"
+                                        onClick={generatePDF}
+                                        title="Download PDF summary"
+                                    >
+                                        Download PDF 📄
+                                    </button>
+                                    <button 
+                                        className={`edit-icon ${showCustomize ? 'active' : ''}`}
+                                        onClick={() => setShowCustomize(!showCustomize)}
+                                        title="Customize macros"
+                                    >
+                                        {showCustomize ? '✓' : '✎'}
+                                    </button>
+                                </div>
                             </div>
                             <div className="macro-results">
                                 <div className="macro-result">
@@ -1926,91 +1936,6 @@ const Calculator = () => {
                                 </div>
                             </div>
                         )}
-                    </div>
-                    <div className="summary-section">
-                        <div className="summary-header">
-                            <h4 style={{margin: 0}}>Your Personalized Nutrition Plan</h4>
-                            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-                                <button 
-                                    className="print-button"
-                                    onClick={generatePDF}
-                                >
-                                    Download PDF 📄
-                                </button>
-                            </div>
-                        </div>
-                        <div className="summary-content">
-                            <p>Based on your profile:</p>
-                            <ul>
-                                <li>Height: {data.height} inches</li>
-                                <li>Weight: {data.weight} lbs</li>
-                                <li>Body Fat: {data.bodyFat}%</li>
-                                <li>Lean Body Mass: {Math.round(leanMass)} lbs</li>
-                                <li>Activity Level: {data.activity}</li>
-                                <li>Goal: {data.goal === 'lose' ? 'Lose Body Fat' :
-                                          data.goal === 'maintain' ? 'Maintain Body Composition' :
-                                          data.goal === 'gain' ? 'Build Lean Muscle' : ''}</li>
-                            </ul>
-                            
-                            <div className="summary-stats">
-                                <h5>Your Daily Targets:</h5>
-                                <p>Calories: {results.calories} kcal</p>
-                                <p>Protein: {results.protein}g ({Math.round(results.protein/leanMass * 10) / 10}g/lb LBM)</p>
-                                <p>Carbs: {results.carbs}g</p>
-                                <p>Fat: {results.fat}g</p>
-                            </div>
-
-                            <div className="transform-services">
-                                <h5>Transform Your Results with Professional Guidance</h5>
-                                <p>While these calculations provide a scientific starting point, achieving your fitness goals requires proper implementation and adjustments. Transform Training offers:</p>
-                                <ul>
-                                    <li>Personalized nutrition coaching</li>
-                                    <li>Custom meal planning</li>
-                                    <li>Progress tracking and adjustments</li>
-                                    <li>1-on-1 training programs</li>
-                                    <li>Ongoing support and accountability</li>
-                                </ul>
-                                <p>Ready to transform your body and health? Contact us to schedule a consultation:</p>
-                                <p style={{marginTop: '10px'}}>
-                                    <strong>Email:</strong> info@transformtraining.com<br/>
-                                    <strong>Phone:</strong> (555) 123-4567<br/>
-                                    <strong>Website:</strong> www.transformtraining.com
-                                </p>
-                            </div>
-
-                            {/* Email form */}
-                            <div className="email-form">
-                                <h5>Get Your Results by Email</h5>
-                                <p>We'll send you your personalized plan and keep you updated with nutrition tips and exclusive offers.</p>
-                                <form onSubmit={handleEmailSubmit} className="email-input-group">
-                                    <input
-                                        type="email"
-                                        className="email-input"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Enter your email"
-                                        required
-                                    />
-                                    <button 
-                                        type="submit" 
-                                        className="email-button"
-                                        disabled={isSubmitting}
-                                    >
-                                        {isSubmitting ? 'Sending...' : 'Send Results'}
-                                    </button>
-                                </form>
-                                {emailStatus === 'success' && (
-                                    <div className="email-status success">
-                                        Great! Check your email for your personalized plan.
-                                    </div>
-                                )}
-                                {emailStatus === 'error' && (
-                                    <div className="email-status error">
-                                        Sorry, there was an error. Please try again.
-                                    </div>
-                                )}
-                            </div>
-                        </div>
                     </div>
                 </div>
             )}
